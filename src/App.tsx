@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import LayoutWrapper from './components/layout/LayoutWrapper';
-import CategoryTable from './components/UI/CategoryTable';
+import OrderTable from './components/UI/OrderTable';
 // import DashboardIcon from '@material-ui/icons/Dashboard';
 // import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 // import PeopleIcon from '@material-ui/icons/People';
@@ -11,14 +11,37 @@ import CategoryTable from './components/UI/CategoryTable';
 function App() {
 	return (
 		<LayoutWrapper>
-			<CategoryTable
-				categories={[
+			<OrderTable
+				orders={[
 					{
-						__v: 7474,
-						_id: 'dhjdjd',
-						createdAt: 'djdjjd',
-						name: 'jsjjdjd',
-						updatedAt: 'skdkdkkd'
+						_id: 'dkkdkd',
+						isPaid: false,
+						isDelivered: true,
+						orderItems: [],
+						paymentMethod: 'djdj',
+						itemsPrice: 3848,
+						shippingAddress: {},
+						createdAt: new Date('10-02-2020').toISOString(),
+						shippingPrice: 323,
+						taxPrice: 0,
+						totalPrice: 384884,
+						updatedAt: 'djdjd',
+						user: 'sjsjs'
+					},
+					{
+						_id: 'dkkddkdkkffkd',
+						isPaid: true,
+						isDelivered: false,
+						orderItems: [],
+						paymentMethod: 'djdj',
+						itemsPrice: 3848,
+						shippingAddress: {},
+						createdAt: new Date('04-10-2021').toISOString(),
+						shippingPrice: 323,
+						taxPrice: 0,
+						totalPrice: 384884,
+						updatedAt: 'djdjd',
+						user: 'sjsjs'
 					}
 				]}
 			/>
