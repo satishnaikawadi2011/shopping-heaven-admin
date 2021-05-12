@@ -1,5 +1,4 @@
 export interface Address {
-	id?: string;
 	fullName?: string | null;
 	phoneNumber?: string | null;
 	pincode?: string | null;
