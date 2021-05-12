@@ -1,11 +1,11 @@
 export interface Product {
-	price: number;
+	price?: number;
 	_id: string;
-	title: string;
-	image: string;
-	description: string;
-	categoryId: string;
-	createdAt: string;
-	updatedAt: string;
-	__v: number;
+	title?: string;
+	image?: string;
+	description?: string;
+	categoryId?: string;
+	createdAt?: string;
+	updatedAt?: string;
+	__v?: number;
 }
