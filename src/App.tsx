@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import LayoutWrapper from './components/layout/LayoutWrapper';
-import CustomerTable from './components/UI/CustomerTable';
+import CategoryTable from './components/UI/CategoryTable';
 // import DashboardIcon from '@material-ui/icons/Dashboard';
 // import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 // import PeopleIcon from '@material-ui/icons/People';
@@ -11,27 +11,14 @@ import CustomerTable from './components/UI/CustomerTable';
 function App() {
 	return (
 		<LayoutWrapper>
-			<CustomerTable
-				customers={[
+			<CategoryTable
+				categories={[
 					{
-						__v: 2,
-						_id: 'dmdkkd',
-						createdAt: 'djjdjd',
-						email: 'djdjjdj',
-						isAdmin: true,
-						updatedAt: 'jdjdj',
-						password: 'djdjjd',
-						username: 'djdjjdjd'
-					},
-					{
-						__v: 2,
-						_id: 'dmdkd',
-						createdAt: 'djjdjd',
-						email: 'djdjjdj',
-						isAdmin: false,
-						updatedAt: 'jdjdj',
-						password: 'djdjjd',
-						username: 'djdjjdjd'
+						__v: 7474,
+						_id: 'dhjdjd',
+						createdAt: 'djdjjd',
+						name: 'jsjjdjd',
+						updatedAt: 'skdkdkkd'
 					}
 				]}
 			/>
