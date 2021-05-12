@@ -1,0 +1,114 @@
+import React from 'react';
+import { withStyles, Theme, createStyles, makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Tooltip from '@material-ui/core/Tooltip';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
+import { IconButton } from '@material-ui/core';
+
+import { User } from '../../models/User';
+
+const StyledTableCell = withStyles((theme: Theme) =>
+	createStyles({
+		head:
+			{
+				backgroundColor: theme.palette.common.black,
+				color: theme.palette.common.white
+			},
+		body:
+			{
+				fontSize: 14
+			}
+	})
+)(TableCell);
+
+const StyledTableRow = withStyles((theme: Theme) =>
+	createStyles({
+		root:
+			{
+				'&:nth-of-type(odd)':
+					{
+						backgroundColor: theme.palette.action.hover
+					}
+			}
+	})
+)(TableRow);
+
+const useStyles = makeStyles({
+	table:
+		{
+			minWidth: 700
+		}
+});
+
+interface CustomerTableProps {
+	customers: User[];
+}
+
+const CustomerTable: React.FC<CustomerTableProps> = ({ customers }) => {
+	const classes = useStyles();
+	return (
+		<TableContainer component={Paper}>
+			<Table className={classes.table} aria-label="customized table">
+				<TableHead>
+					<TableRow>
+						<StyledTableCell>ID</StyledTableCell>
+						<StyledTableCell align="right">Username</StyledTableCell>
+						<StyledTableCell align="right">Email</StyledTableCell>
+						<StyledTableCell align="right">Admin</StyledTableCell>
+						<StyledTableCell align="center">Actions</StyledTableCell>
+					</TableRow>
+				</TableHead>
+				<TableBody>
+					{customers.map((customer) => (
+						<StyledTableRow key={customer._id}>
+							<StyledTableCell component="th" scope="row">
+								{customer._id}
+							</StyledTableCell>
+							<StyledTableCell align="right">{customer.username}</StyledTableCell>
+							<StyledTableCell align="right">{customer.email}</StyledTableCell>
+							<StyledTableCell align="right">
+								{
+									customer.isAdmin ? <Tooltip title="Admin User">
+										<CheckCircleIcon style={{ color: 'green' }} />
+									</Tooltip> :
+									<Tooltip title="Regular User">
+										<CancelIcon style={{ color: 'red' }} />
+									</Tooltip>}
+							</StyledTableCell>
+
+							<StyledTableCell align="center">
+								<Tooltip
+									title={
+
+											customer.isAdmin ? 'Remove Admin Previlliges' :
+											'Make Admin'
+									}
+								>
+									<IconButton aria-label="edit">
+										<EditIcon style={{ color: 'blue' }} />
+									</IconButton>
+								</Tooltip>
+								<Tooltip title="Delete">
+									<IconButton aria-label="delete">
+										<DeleteIcon style={{ color: 'red' }} />
+									</IconButton>
+								</Tooltip>
+							</StyledTableCell>
+						</StyledTableRow>
+					))}
+				</TableBody>
+			</Table>
+		</TableContainer>
+	);
+};
+
+export default CustomerTable;
