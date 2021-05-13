@@ -9,15 +9,12 @@ import AppErrorMessage from './AppErrorMessage';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
-		button:
-			{
-				display: 'block',
-				marginTop: theme.spacing(2)
-			},
 		formControl:
 			{
 				margin: theme.spacing(1),
-				minWidth: 120
+				minWidth: 120,
+				width: '80vw',
+				maxWidth: 350
 			}
 	})
 );
@@ -66,15 +63,9 @@ const AppSelectField: React.FC<SelectProps> = ({ label, fieldName, options }) =>
 					value={myValues[fieldName]}
 					onBlur={() => setFieldTouched(fieldName)}
 				>
-					{/* <MenuItem value="">
-            <em>None</em>
-          </MenuItem> */}
 					{options.map((option) => {
 						return <MenuItem value={option.value}>{option.label}</MenuItem>;
 					})}
-					{/* <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem> */}
 				</Select>
 				<AppErrorMessage errorMessage={formErrors[fieldName]} visible={formTouched[fieldName]} />
 			</FormControl>
