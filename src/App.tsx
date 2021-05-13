@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Yup from 'yup';
+import AppLoader from './animations/components/AppLoader';
 
 import './App.css';
 import AppForm from './components/form/AppForm';
@@ -21,27 +22,29 @@ const schema = Yup.object({
 function App() {
 	return (
 		<LayoutWrapper>
-			<AppForm
-				initialValues={{ name: 'Satish', password: '' }}
-				validationSchema={schema}
-				onSubmit={(values: any) => console.log(values)}
-			>
-				<AppFormField
-					label="Name"
-					style={{ width: '100vw' }}
-					placeholder="your name"
-					variant="outlined"
-					fieldName="name"
-					defaultValue="Satish"
-				/>
-				<AppFormField fieldName="password" />
-				<SubmitButton variant="contained" style={{ backgroundColor: 'green', color: 'white' }} title="Submit" />
-			</AppForm>
+			<AppLoader />
 		</LayoutWrapper>
 	);
 }
 
 export default App;
+
+// <AppForm
+// 	initialValues={{ name: 'Satish', password: '' }}
+// 	validationSchema={schema}
+// 	onSubmit={(values: any) => console.log(values)}
+// >
+// 	<AppFormField
+// 		label="Name"
+// 		style={{ width: '100vw' }}
+// 		placeholder="your name"
+// 		variant="outlined"
+// 		fieldName="name"
+// 		defaultValue="Satish"
+// 	/>
+// 	<AppFormField fieldName="password" />
+// 	<SubmitButton variant="contained" style={{ backgroundColor: 'green', color: 'white' }} title="Submit" />
+// </AppForm>
 
 {
 	/* <OrderTable
