@@ -64,7 +64,11 @@ const AppSelectField: React.FC<SelectProps> = ({ label, fieldName, options }) =>
 					onBlur={() => setFieldTouched(fieldName)}
 				>
 					{options.map((option) => {
-						return <MenuItem value={option.value}>{option.label}</MenuItem>;
+						return (
+							<MenuItem key={option.value} value={option.value}>
+								{option.label}
+							</MenuItem>
+						);
 					})}
 				</Select>
 				<AppErrorMessage errorMessage={formErrors[fieldName]} visible={formTouched[fieldName]} />

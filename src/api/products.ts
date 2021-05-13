@@ -1,5 +1,13 @@
-import { Product } from './../models/Product';
 import client from './client';
+
+export interface UpdateProductData {
+	_id: string;
+	title: string;
+	description: string;
+	price: string;
+	image: string;
+	categoryId: string;
+}
 
 const endpoint = '/product';
 
@@ -23,7 +31,7 @@ const getProduct = (token: string | null, productId: string) => {
 	return client.get(`${endpoint}/${productId}`);
 };
 
-const updateProduct = (token: string | null, product: Product) => {
+const updateProduct = (token: string | null, product: UpdateProductData) => {
 	client.setHeader('Authorization', `Bearer ${token}`);
 	return client.patch(`${endpoint}/${product._id}`, product);
 };

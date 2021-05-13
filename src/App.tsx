@@ -30,42 +30,43 @@ const schema = Yup.object({
 function App() {
 	return (
 		<LayoutWrapper>
-			{/* <Router>
+			<Router>
 				<Switch>
 					<Route path="/" component={ProductHome} exact />
 					<Route path="/products/:id" exact component={EditProduct} />
 				</Switch>
-			</Router> */}
-			<AppForm
-				initialValues={{ name: 'Satish', password: '', hobby: '' }}
-				validationSchema={schema}
-				onSubmit={(values: any) => console.log(values)}
-			>
-				<AppFormField
-					label="Name"
-					style={{ width: '100vw' }}
-					placeholder="your name"
-					variant="outlined"
-					fieldName="name"
-					defaultValue="Satish"
-				/>
-				<AppFormField fieldName="password" />
-				<AppSelectField
-					fieldName="hobby"
-					label="Hobby"
-					options={[
-						{ label: 'Cricket', value: 'cricket' },
-						{ label: 'Swimming', value: 'swimming' },
-						{ label: 'Treking', value: 'treking' }
-					]}
-				/>
-				<SubmitButton variant="contained" style={{ backgroundColor: 'green', color: 'white' }} title="Submit" />
-			</AppForm>
+			</Router>
 		</LayoutWrapper>
 	);
 }
 
 export default App;
+
+// <AppForm
+// 	initialValues={{ name: 'Satish', password: '', hobby: '' }}
+// 	validationSchema={schema}
+// 	onSubmit={(values: any) => console.log(values)}
+// >
+// 	<AppFormField
+// 		label="Name"
+// 		style={{ width: '100vw' }}
+// 		placeholder="your name"
+// 		variant="outlined"
+// 		fieldName="name"
+// 		defaultValue="Satish"
+// 	/>
+// 	<AppFormField fieldName="password" />
+// 	<AppSelectField
+// 		fieldName="hobby"
+// 		label="Hobby"
+// 		options={[
+// 			{ label: 'Cricket', value: 'cricket' },
+// 			{ label: 'Swimming', value: 'swimming' },
+// 			{ label: 'Treking', value: 'treking' }
+// 		]}
+// 	/>
+// 	<SubmitButton variant="contained" style={{ backgroundColor: 'green', color: 'white' }} title="Submit" />
+// </AppForm>
 
 {
 	/* <OrderTable
