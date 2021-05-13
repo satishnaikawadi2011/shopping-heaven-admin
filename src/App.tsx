@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
+import AppErrorMessage from './components/form/AppErrorMessage';
 import LayoutWrapper from './components/layout/LayoutWrapper';
-import OrderTable from './components/UI/OrderTable';
+// import OrderTable from './components/UI/OrderTable';
 // import DashboardIcon from '@material-ui/icons/Dashboard';
 // import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 // import PeopleIcon from '@material-ui/icons/People';
@@ -11,7 +12,15 @@ import OrderTable from './components/UI/OrderTable';
 function App() {
 	return (
 		<LayoutWrapper>
-			<OrderTable
+			<AppErrorMessage visible errorMessage="this is error message" />
+		</LayoutWrapper>
+	);
+}
+
+export default App;
+
+{
+	/* <OrderTable
 				orders={[
 					{
 						_id: 'dkkdkd',
@@ -44,9 +53,5 @@ function App() {
 						user: 'sjsjs'
 					}
 				]}
-			/>
-		</LayoutWrapper>
-	);
+			/> */
 }
-
-export default App;
