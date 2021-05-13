@@ -8,6 +8,7 @@ import './App.css';
 // import AppFormField from './components/form/AppFormField';
 // import SubmitButton from './components/form/SubmitButton';
 import LayoutWrapper from './components/layout/LayoutWrapper';
+import NotFoundPage from './animations/components/NotFoundPage';
 import EditProduct from './pages/products/EditProduct';
 import ProductHome from './pages/products';
 import AppForm from './components/form/AppForm';
@@ -29,14 +30,13 @@ const schema = Yup.object({
 
 function App() {
 	return (
-		<LayoutWrapper>
-			<Router>
-				<Switch>
-					<Route path="/" component={ProductHome} exact />
-					<Route path="/products/:id" exact component={EditProduct} />
-				</Switch>
-			</Router>
-		</LayoutWrapper>
+		<Router>
+			<Switch>
+				<Route path="/" component={ProductHome} exact />
+				<Route path="/products/:id" exact component={EditProduct} />
+				<Route component={NotFoundPage} />
+			</Switch>
+		</Router>
 	);
 }
 

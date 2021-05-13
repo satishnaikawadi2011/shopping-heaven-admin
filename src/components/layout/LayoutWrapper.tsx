@@ -3,7 +3,9 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import SHAppBar from './SHAppBar';
 import AppDrawer from './AppDrawer';
 
-interface LayoutProps {}
+interface LayoutProps {
+	noDrawer?: boolean;
+}
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -28,12 +30,12 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-const LayoutWrapper: React.FC<LayoutProps> = ({ children }) => {
+const LayoutWrapper: React.FC<LayoutProps> = ({ children, noDrawer = false }) => {
 	const classes = useStyles();
 	return (
 		<div className={classes.root}>
 			<SHAppBar />
-			<AppDrawer />
+			{!noDrawer && <AppDrawer />}
 			<main className={classes.content}>
 				<div className={classes.toolbar} />
 				{children}

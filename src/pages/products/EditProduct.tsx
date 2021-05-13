@@ -22,6 +22,7 @@ import useFileUpload from '../../hooks/useFileUpload';
 import SubmitButton from '../../components/form/SubmitButton';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
+import LayoutWrapper from '../../components/layout/LayoutWrapper';
 
 function Alert(props: AlertProps) {
   return <MuiAlert style={{maxWidth:600,marginBottom:30}} elevation={6} variant="filled" {...props} />;
@@ -87,13 +88,17 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 		]
 	);
 	if (error || catError || uploadErr || updateError) {
-		return <ErrorPage />
+		return <LayoutWrapper>
+			<ErrorPage />
+		</LayoutWrapper>
 	}
 	if (loading || !product || catLoading || !categories  || updateLoad) {
 		return (
-			<Centre>
+			<LayoutWrapper>
+				<Centre>
 				<AppLoader />
 			</Centre>
+			</LayoutWrapper>
 		);
 	}
     const initialValues = {
@@ -131,7 +136,7 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 	
 	}
 	return (
-		<React.Fragment>
+		<LayoutWrapper>
 			     <Snackbar open={isSnackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
         <Alert onClose={handleSnackbarClose} severity="success">
           Updated the product info successfully !!!!
@@ -202,7 +207,7 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
                 </FormContainer>
 			</div>
 		</div>
-		</React.Fragment>
+		</LayoutWrapper>
 	);
 };
 

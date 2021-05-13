@@ -14,6 +14,7 @@ import Centre from '../../components/utility/Centre';
 import { AUTH_TOKEN_FOR_DEVELOPMENT } from '../../constants';
 import NoProductsFound from '../../animations/components/NoProductsFound';
 import { useCategoryStore } from '../../store/categories';
+import LayoutWrapper from '../../components/layout/LayoutWrapper';
 
 const useStyles = makeStyles((props) => ({
 	title:
@@ -70,34 +71,42 @@ const Index: React.FC<RouteComponentProps> = ({ history }) => {
 		]
 	);
 	if (error || catError || createErr) {
-		return <ErrorPage />;
+		return (
+			<LayoutWrapper>
+				<ErrorPage />
+			</LayoutWrapper>
+		);
 	}
 	if (loading || !products || catLoading || !categories || createLoad) {
 		return (
-			<Centre>
-				<AppLoader />
-			</Centre>
+			<LayoutWrapper>
+				<Centre>
+					<AppLoader />
+				</Centre>
+			</LayoutWrapper>
 		);
 	}
 	return (
-		<div>
-			<Typography className={classes.title} variant="h3" component="h1">
-				Manage Products
-			</Typography>
-			<div className={classes.addBtnContainer}>
-				<Button
-					variant="contained"
-					className={classes.addBtn}
-					onClick={handleAddProduct}
-					startIcon={<AddIcon />}
-				>
-					Add Product
-				</Button>
+		<LayoutWrapper>
+			<div>
+				<Typography className={classes.title} variant="h3" component="h1">
+					Manage Products
+				</Typography>
+				<div className={classes.addBtnContainer}>
+					<Button
+						variant="contained"
+						className={classes.addBtn}
+						onClick={handleAddProduct}
+						startIcon={<AddIcon />}
+					>
+						Add Product
+					</Button>
+				</div>
+				{
+					products.length === 0 ? <NoProductsFound /> :
+					<ProductTable products={products} categories={categories} />}
 			</div>
-			{
-				products.length === 0 ? <NoProductsFound /> :
-				<ProductTable products={products} categories={categories} />}
-		</div>
+		</LayoutWrapper>
 	);
 };
 
