@@ -1,12 +1,14 @@
 import React from 'react';
-import * as Yup from 'yup';
-import AppLoader from './animations/components/AppLoader';
+import ErrorPage from './animations/components/ErrorPage';
+// import * as Yup from 'yup';
+// import AppLoader from './animations/components/AppLoader';
 
 import './App.css';
-import AppForm from './components/form/AppForm';
-import AppFormField from './components/form/AppFormField';
-import SubmitButton from './components/form/SubmitButton';
+// import AppForm from './components/form/AppForm';
+// import AppFormField from './components/form/AppFormField';
+// import SubmitButton from './components/form/SubmitButton';
 import LayoutWrapper from './components/layout/LayoutWrapper';
+import ProductHome from './pages/products';
 // import OrderTable from './components/UI/OrderTable';
 // import DashboardIcon from '@material-ui/icons/Dashboard';
 // import LocalShippingIcon from '@material-ui/icons/LocalShipping';
@@ -14,15 +16,16 @@ import LayoutWrapper from './components/layout/LayoutWrapper';
 // import CategoryIcon from '@material-ui/icons/Category';
 // import ShopIcon from '@material-ui/icons/Shop';
 
-const schema = Yup.object({
-	name: Yup.string().required(),
-	password: Yup.string().required()
-});
+// const schema = Yup.object({
+// 	name: Yup.string().required(),
+// 	password: Yup.string().required()
+// });
 
 function App() {
 	return (
 		<LayoutWrapper>
-			<AppLoader />
+			<ErrorPage />
+			{/* <ProductHome /> */}
 		</LayoutWrapper>
 	);
 }
