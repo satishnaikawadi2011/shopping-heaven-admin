@@ -1,13 +1,13 @@
 import React from 'react';
 import ErrorPage from './animations/components/ErrorPage';
-// import * as Yup from 'yup';
-// import AppLoader from './animations/components/AppLoader';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import './App.css';
 // import AppForm from './components/form/AppForm';
 // import AppFormField from './components/form/AppFormField';
 // import SubmitButton from './components/form/SubmitButton';
 import LayoutWrapper from './components/layout/LayoutWrapper';
+import EditProduct from './pages/products/EditProduct';
 import ProductHome from './pages/products';
 // import OrderTable from './components/UI/OrderTable';
 // import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -24,8 +24,12 @@ import ProductHome from './pages/products';
 function App() {
 	return (
 		<LayoutWrapper>
-			{/* <ErrorPage /> */}
-			<ProductHome />
+			<Router>
+				<Switch>
+					<Route path="/" component={ProductHome} exact />
+					<Route path="/products/:id" exact component={EditProduct} />
+				</Switch>
+			</Router>
 		</LayoutWrapper>
 	);
 }

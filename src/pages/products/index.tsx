@@ -11,6 +11,7 @@ import ProductTable from '../../components/UI/ProductTable';
 import Centre from '../../components/utility/Centre';
 import { AUTH_TOKEN_FOR_DEVELOPMENT } from '../../constants';
 import NoProductsFound from '../../animations/components/NoProductsFound';
+import { RouteComponentProps } from 'react-router';
 
 const useStyles = makeStyles((props) => ({
 	title:
@@ -21,7 +22,7 @@ const useStyles = makeStyles((props) => ({
 	addBtnContainer: { display: 'flex', justifyContent: 'flex-end', marginBottom: 50 }
 }));
 
-const Index = () => {
+const Index: React.FC<RouteComponentProps> = ({}) => {
 	const { products, setProducts } = useProductStore();
 	const { data, error, loading, request: getProducts } = useApi(productsApi.getProducts);
 	const classes = useStyles();

@@ -10,10 +10,13 @@ import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import { IconButton } from '@material-ui/core';
+import { useHistory } from 'react-router';
 
 import { Product } from '../../models/Product';
-import { IconButton } from '@material-ui/core';
-import { INDIAN_RUPEE_SIGN } from '../../constants';
+import { AUTH_TOKEN_FOR_DEVELOPMENT, INDIAN_RUPEE_SIGN } from '../../constants';
+import productsApi from '../../api/products';
+import { useProductStore } from '../../store/products';
 
 const StyledTableCell = withStyles((theme: Theme) =>
 	createStyles({
@@ -53,7 +56,16 @@ interface ProductTableProps {
 }
 
 const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
+	const history = useHistory();
 	const classes = useStyles();
+	const { removeProduct } = useProductStore();
+	const handleEdit = (id: string) => {
+		history.push(`/products/${id}`);
+	};
+	const handleDelete = (id: string) => {
+		removeProduct(id);
+		productsApi.deleteProduct(AUTH_TOKEN_FOR_DEVELOPMENT, id);
+	};
 	return (
 		<TableContainer component={Paper}>
 			<Table className={classes.table} aria-label="customized table">
@@ -78,12 +90,12 @@ const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
 
 							<StyledTableCell align="center">
 								<Tooltip title="Edit">
-									<IconButton aria-label="edit">
+									<IconButton aria-label="edit" onClick={() => handleEdit(product._id)}>
 										<EditIcon style={{ color: 'blue' }} />
 									</IconButton>
 								</Tooltip>
 								<Tooltip title="Delete">
-									<IconButton aria-label="delete">
+									<IconButton aria-label="delete" onClick={() => handleDelete(product._id)}>
 										<DeleteIcon style={{ color: 'red' }} />
 									</IconButton>
 								</Tooltip>
