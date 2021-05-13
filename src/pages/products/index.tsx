@@ -1,9 +1,11 @@
 import { Button, makeStyles, Typography } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import AddIcon from '@material-ui/icons/Add';
+import { RouteComponentProps } from 'react-router';
 
 import useApi from '../../hooks/useApi';
 import productsApi from '../../api/products';
+import categoriesApi from '../../api/categories';
 import ErrorPage from '../../animations/components/ErrorPage';
 import AppLoader from '../../animations/components/AppLoader';
 import { useProductStore } from '../../store/products';
@@ -11,7 +13,7 @@ import ProductTable from '../../components/UI/ProductTable';
 import Centre from '../../components/utility/Centre';
 import { AUTH_TOKEN_FOR_DEVELOPMENT } from '../../constants';
 import NoProductsFound from '../../animations/components/NoProductsFound';
-import { RouteComponentProps } from 'react-router';
+import { useCategoryStore } from '../../store/categories';
 
 const useStyles = makeStyles((props) => ({
 	title:
@@ -24,25 +26,36 @@ const useStyles = makeStyles((props) => ({
 
 const Index: React.FC<RouteComponentProps> = ({}) => {
 	const { products, setProducts } = useProductStore();
+	const { categories, setCategories } = useCategoryStore();
 	const { data, error, loading, request: getProducts } = useApi(productsApi.getProducts);
+	const { data: categoryData, loading: catLoading, error: catError, request: getCategories } = useApi(
+		categoriesApi.getCategories
+	);
 	const classes = useStyles();
 	useEffect(() => {
 		getProducts(AUTH_TOKEN_FOR_DEVELOPMENT);
+		getCategories(AUTH_TOKEN_FOR_DEVELOPMENT);
 	}, []);
 	useEffect(
 		() => {
 			if (data) {
 				setProducts(data as any);
 			}
+			if (categoryData) {
+				setCategories(categoryData as any);
+			}
 		},
 		[
-			data
+			data,
+			categoryData,
+			setProducts,
+			setCategories
 		]
 	);
-	if (error) {
+	if (error || catError) {
 		return <ErrorPage />;
 	}
-	if (loading || !products) {
+	if (loading || !products || catLoading || !categories) {
 		return (
 			<Centre>
 				<AppLoader />
@@ -61,7 +74,7 @@ const Index: React.FC<RouteComponentProps> = ({}) => {
 			</div>
 			{
 				products.length === 0 ? <NoProductsFound /> :
-				<ProductTable products={products} />}
+				<ProductTable products={products} categories={categories} />}
 		</div>
 	);
 };

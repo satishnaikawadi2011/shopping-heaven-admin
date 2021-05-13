@@ -17,6 +17,7 @@ import { Product } from '../../models/Product';
 import { AUTH_TOKEN_FOR_DEVELOPMENT, INDIAN_RUPEE_SIGN } from '../../constants';
 import productsApi from '../../api/products';
 import { useProductStore } from '../../store/products';
+import { Category } from '../../models/Category';
 
 const StyledTableCell = withStyles((theme: Theme) =>
 	createStyles({
@@ -53,9 +54,10 @@ const useStyles = makeStyles({
 
 interface ProductTableProps {
 	products: Product[];
+	categories: Category[];
 }
 
-const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
+const ProductTable: React.FC<ProductTableProps> = ({ products, categories }) => {
 	const history = useHistory();
 	const classes = useStyles();
 	const { removeProduct } = useProductStore();
@@ -65,6 +67,11 @@ const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
 	const handleDelete = (id: string) => {
 		removeProduct(id);
 		productsApi.deleteProduct(AUTH_TOKEN_FOR_DEVELOPMENT, id);
+	};
+	const getCategoryName = (id: string): string => {
+		console.log('In table', categories);
+		const category = categories.find((cat) => cat._id === id);
+		return category!.name;
 	};
 	return (
 		<TableContainer component={Paper}>
@@ -86,7 +93,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
 							</StyledTableCell>
 							<StyledTableCell align="right">{product.title}</StyledTableCell>
 							<StyledTableCell align="right">{product.price}</StyledTableCell>
-							<StyledTableCell align="right">{''}</StyledTableCell>
+							<StyledTableCell align="right">{getCategoryName(product.categoryId!)}</StyledTableCell>
 
 							<StyledTableCell align="center">
 								<Tooltip title="Edit">
