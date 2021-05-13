@@ -155,7 +155,7 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 				<FormContainer>
                     <AppForm initialValues={initialValues} validationSchema={produdctValidationSchema} onSubmit={submitHandler}>
 						<div>
-							<Alert severity="warning">Remember to click <b>Upload Product</b> button after editing otherwise product will not be updated!!</Alert>
+							<Alert severity="warning">Remember to click <b>Update Product</b> button present at bottom after editing otherwise product will not be updated!!</Alert>
                         <AppFormField
                         fieldName='title'
                         label='Title'

@@ -24,14 +24,31 @@ const useStyles = makeStyles((props) => ({
 	addBtnContainer: { display: 'flex', justifyContent: 'flex-end', marginBottom: 50 }
 }));
 
-const Index: React.FC<RouteComponentProps> = ({}) => {
+const Index: React.FC<RouteComponentProps> = ({ history }) => {
 	const { products, setProducts } = useProductStore();
 	const { categories, setCategories } = useCategoryStore();
 	const { data, error, loading, request: getProducts } = useApi(productsApi.getProducts);
 	const { data: categoryData, loading: catLoading, error: catError, request: getCategories } = useApi(
 		categoriesApi.getCategories
 	);
+	const { data: createdProduct, error: createErr, loading: createLoad, request: createProduct } = useApi(
+		productsApi.createProduct
+	);
 	const classes = useStyles();
+	useEffect(
+		() => {
+			if (createdProduct) {
+				history.push(`/products/${(createdProduct! as any)._id}`);
+			}
+		},
+		[
+			history,
+			createdProduct
+		]
+	);
+	const handleAddProduct = async () => {
+		await createProduct(AUTH_TOKEN_FOR_DEVELOPMENT);
+	};
 	useEffect(() => {
 		getProducts(AUTH_TOKEN_FOR_DEVELOPMENT);
 		getCategories(AUTH_TOKEN_FOR_DEVELOPMENT);
@@ -52,10 +69,10 @@ const Index: React.FC<RouteComponentProps> = ({}) => {
 			setCategories
 		]
 	);
-	if (error || catError) {
+	if (error || catError || createErr) {
 		return <ErrorPage />;
 	}
-	if (loading || !products || catLoading || !categories) {
+	if (loading || !products || catLoading || !categories || createLoad) {
 		return (
 			<Centre>
 				<AppLoader />
@@ -68,7 +85,12 @@ const Index: React.FC<RouteComponentProps> = ({}) => {
 				Manage Products
 			</Typography>
 			<div className={classes.addBtnContainer}>
-				<Button variant="contained" className={classes.addBtn} startIcon={<AddIcon />}>
+				<Button
+					variant="contained"
+					className={classes.addBtn}
+					onClick={handleAddProduct}
+					startIcon={<AddIcon />}
+				>
 					Add Product
 				</Button>
 			</div>
