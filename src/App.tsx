@@ -24,8 +24,8 @@ import ProductHome from './pages/products';
 function App() {
 	return (
 		<LayoutWrapper>
-			<ErrorPage />
-			{/* <ProductHome /> */}
+			{/* <ErrorPage /> */}
+			<ProductHome />
 		</LayoutWrapper>
 	);
 }
