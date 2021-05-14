@@ -112,7 +112,10 @@ export default function AppDrawer() {
 		{
 			icon: <LocalShippingIcon />,
 			name: 'Orders',
-			onClick: () => {}
+			onClick:
+				() => {
+					history.replace('/orders');
+				}
 		},
 		{
 			icon: <PeopleIcon />,

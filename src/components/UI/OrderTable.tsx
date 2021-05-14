@@ -17,6 +17,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { INDIAN_RUPEE_SIGN } from '../../constants';
 import { Order } from '../../models/Order';
+import { useHistory } from 'react-router';
 
 dayjs.extend(relativeTime);
 
@@ -59,6 +60,7 @@ interface OrderTableProps {
 
 const OrderTable: React.FC<OrderTableProps> = ({ orders }) => {
 	const classes = useStyles();
+	const history = useHistory();
 	return (
 		<TableContainer component={Paper}>
 			<Table className={classes.table} aria-label="customized table">
@@ -83,15 +85,21 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders }) => {
 							<StyledTableCell align="right">
 								{
 									order.isDelivered ? <Chip
-										style={{ backgroundColor: 'green' }}
+										style={{ backgroundColor: 'green', color: 'white' }}
 										label="Delivered"
 									/> :
-									<Chip style={{ backgroundColor: 'yellow' }} label="Not Delivered" />}
+									<Chip
+										style={{ backgroundColor: 'yellow', color: 'black' }}
+										label="Not Delivered"
+									/>}
 							</StyledTableCell>
 							<StyledTableCell align="right">
 								{
-									order.isPaid ? <Chip style={{ backgroundColor: 'green' }} label="Paid" /> :
-									<Chip style={{ backgroundColor: 'yellow' }} label="Pending" />}
+									order.isPaid ? <Chip
+										style={{ backgroundColor: 'green', color: 'white' }}
+										label="Paid"
+									/> :
+									<Chip style={{ backgroundColor: 'yellow', color: 'black' }} label="Pending" />}
 							</StyledTableCell>
 							<StyledTableCell align="center">
 								<Tooltip title="Mark As Delivered">
@@ -105,7 +113,12 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders }) => {
 									</IconButton>
 								</Tooltip>
 								<Tooltip title="Details">
-									<IconButton aria-label="details">
+									<IconButton
+										aria-label="details"
+										onClick={() => {
+											history.push(`/orders/${order._id}`);
+										}}
+									>
 										<VisibilityIcon style={{ color: 'skyblue' }} />
 									</IconButton>
 								</Tooltip>
