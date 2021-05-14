@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withStyles, Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -18,6 +18,7 @@ import { AUTH_TOKEN_FOR_DEVELOPMENT, INDIAN_RUPEE_SIGN } from '../../constants';
 import productsApi from '../../api/products';
 import { useProductStore } from '../../store/products';
 import { Category } from '../../models/Category';
+import AppAlertDialog from '../AppAlertDialog';
 
 const StyledTableCell = withStyles((theme: Theme) =>
 	createStyles({
@@ -60,13 +61,25 @@ interface ProductTableProps {
 const ProductTable: React.FC<ProductTableProps> = ({ products, categories }) => {
 	const history = useHistory();
 	const classes = useStyles();
+	const [
+		productId,
+		setProductId
+	] = useState('');
+	const [
+		openAlert,
+		setOpenAlert
+	] = useState(false);
+	const handleCloseAlert = () => {
+		setOpenAlert(false);
+	};
 	const { removeProduct } = useProductStore();
 	const handleEdit = (id: string) => {
 		history.push(`/products/${id}`);
 	};
-	const handleDelete = (id: string) => {
-		removeProduct(id);
-		productsApi.deleteProduct(AUTH_TOKEN_FOR_DEVELOPMENT, id);
+	const handleDelete = () => {
+		removeProduct(productId);
+		productsApi.deleteProduct(AUTH_TOKEN_FOR_DEVELOPMENT, productId);
+		handleCloseAlert();
 	};
 	const getCategoryName = (id: string): string => {
 		console.log('In table', categories);
@@ -74,44 +87,59 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, categories }) => 
 		return category!.name;
 	};
 	return (
-		<TableContainer component={Paper}>
-			<Table className={classes.table} aria-label="customized table">
-				<TableHead>
-					<TableRow>
-						<StyledTableCell>ID</StyledTableCell>
-						<StyledTableCell align="right">Title</StyledTableCell>
-						<StyledTableCell align="right">Price ({INDIAN_RUPEE_SIGN})</StyledTableCell>
-						<StyledTableCell align="right">Category</StyledTableCell>
-						<StyledTableCell align="center">Actions</StyledTableCell>
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{products.map((product) => (
-						<StyledTableRow key={product._id}>
-							<StyledTableCell component="th" scope="row">
-								{product._id}
-							</StyledTableCell>
-							<StyledTableCell align="right">{product.title}</StyledTableCell>
-							<StyledTableCell align="right">{product.price}</StyledTableCell>
-							<StyledTableCell align="right">{getCategoryName(product.categoryId!)}</StyledTableCell>
+		<React.Fragment>
+			<AppAlertDialog
+				description="Are you sure you want to delete this product ?"
+				handleClose={handleCloseAlert}
+				open={openAlert}
+				title={'Delete Product'}
+				onAgree={handleDelete}
+			/>
+			<TableContainer component={Paper}>
+				<Table className={classes.table} aria-label="customized table">
+					<TableHead>
+						<TableRow>
+							<StyledTableCell>ID</StyledTableCell>
+							<StyledTableCell align="right">Title</StyledTableCell>
+							<StyledTableCell align="right">Price ({INDIAN_RUPEE_SIGN})</StyledTableCell>
+							<StyledTableCell align="right">Category</StyledTableCell>
+							<StyledTableCell align="center">Actions</StyledTableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{products.map((product) => (
+							<StyledTableRow key={product._id}>
+								<StyledTableCell component="th" scope="row">
+									{product._id}
+								</StyledTableCell>
+								<StyledTableCell align="right">{product.title}</StyledTableCell>
+								<StyledTableCell align="right">{product.price}</StyledTableCell>
+								<StyledTableCell align="right">{getCategoryName(product.categoryId!)}</StyledTableCell>
 
-							<StyledTableCell align="center">
-								<Tooltip title="Edit">
-									<IconButton aria-label="edit" onClick={() => handleEdit(product._id)}>
-										<EditIcon style={{ color: 'blue' }} />
-									</IconButton>
-								</Tooltip>
-								<Tooltip title="Delete">
-									<IconButton aria-label="delete" onClick={() => handleDelete(product._id)}>
-										<DeleteIcon style={{ color: 'red' }} />
-									</IconButton>
-								</Tooltip>
-							</StyledTableCell>
-						</StyledTableRow>
-					))}
-				</TableBody>
-			</Table>
-		</TableContainer>
+								<StyledTableCell align="center">
+									<Tooltip title="Edit">
+										<IconButton aria-label="edit" onClick={() => handleEdit(product._id)}>
+											<EditIcon style={{ color: 'blue' }} />
+										</IconButton>
+									</Tooltip>
+									<Tooltip title="Delete">
+										<IconButton
+											aria-label="delete"
+											onClick={() => {
+												setOpenAlert(true);
+												setProductId(product._id);
+											}}
+										>
+											<DeleteIcon style={{ color: 'red' }} />
+										</IconButton>
+									</Tooltip>
+								</StyledTableCell>
+							</StyledTableRow>
+						))}
+					</TableBody>
+				</Table>
+			</TableContainer>
+		</React.Fragment>
 	);
 };
 

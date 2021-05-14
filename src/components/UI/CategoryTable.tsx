@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withStyles, Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,6 +11,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { IconButton } from '@material-ui/core';
 import { Category } from '../../models/Category';
+import AppAlertDialog from '../AppAlertDialog';
+import { useCategoryStore } from '../../store/categories';
+import { AUTH_TOKEN_FOR_DEVELOPMENT } from '../../constants';
+import categoriesApi from '../../api/categories';
 
 const StyledTableCell = withStyles((theme: Theme) =>
 	createStyles({
@@ -50,36 +54,68 @@ interface CategoryTableProps {
 }
 
 const CategoryTable: React.FC<CategoryTableProps> = ({ categories }) => {
+	const { removeCategory } = useCategoryStore();
+	const [
+		categoryId,
+		setCategoryId
+	] = useState('');
+	const [
+		openAlert,
+		setOpenAlert
+	] = useState(false);
+	const handleCloseAlert = () => {
+		setOpenAlert(false);
+	};
+	const handleDelete = () => {
+		removeCategory(categoryId);
+		categoriesApi.deleteCategory(AUTH_TOKEN_FOR_DEVELOPMENT, categoryId);
+		handleCloseAlert();
+	};
 	const classes = useStyles();
 	return (
-		<TableContainer component={Paper}>
-			<Table className={classes.table} aria-label="customized table">
-				<TableHead>
-					<TableRow>
-						<StyledTableCell>ID</StyledTableCell>
-						<StyledTableCell align="right">Name</StyledTableCell>
-						<StyledTableCell align="center">Action</StyledTableCell>
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{categories.map((category) => (
-						<StyledTableRow key={category._id}>
-							<StyledTableCell component="th" scope="row">
-								{category._id}
-							</StyledTableCell>
-							<StyledTableCell align="right">{category.name}</StyledTableCell>
-							<StyledTableCell align="center">
-								<Tooltip title="Delete">
-									<IconButton aria-label="delete">
-										<DeleteIcon style={{ color: 'red' }} />
-									</IconButton>
-								</Tooltip>
-							</StyledTableCell>
-						</StyledTableRow>
-					))}
-				</TableBody>
-			</Table>
-		</TableContainer>
+		<React.Fragment>
+			<AppAlertDialog
+				description="Are you sure you want to delete this product category?"
+				handleClose={handleCloseAlert}
+				open={openAlert}
+				title={'Delete category'}
+				onAgree={handleDelete}
+			/>
+			<TableContainer component={Paper}>
+				<Table className={classes.table} aria-label="customized table">
+					<TableHead>
+						<TableRow>
+							<StyledTableCell>ID</StyledTableCell>
+							<StyledTableCell align="right">Name</StyledTableCell>
+							<StyledTableCell align="center">Action</StyledTableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{categories.map((category) => (
+							<StyledTableRow key={category._id}>
+								<StyledTableCell component="th" scope="row">
+									{category._id}
+								</StyledTableCell>
+								<StyledTableCell align="right">{category.name}</StyledTableCell>
+								<StyledTableCell align="center">
+									<Tooltip title="Delete">
+										<IconButton
+											aria-label="delete"
+											onClick={() => {
+												setOpenAlert(true);
+												setCategoryId(category._id);
+											}}
+										>
+											<DeleteIcon style={{ color: 'red' }} />
+										</IconButton>
+									</Tooltip>
+								</StyledTableCell>
+							</StyledTableRow>
+						))}
+					</TableBody>
+				</Table>
+			</TableContainer>
+		</React.Fragment>
 	);
 };
 
