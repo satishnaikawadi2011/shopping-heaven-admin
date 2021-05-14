@@ -16,6 +16,7 @@ import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import PeopleIcon from '@material-ui/icons/People';
 import CategoryIcon from '@material-ui/icons/Category';
 import ShopIcon from '@material-ui/icons/Shop';
+import { useHistory } from 'react-router';
 
 const drawerWidth = 240;
 
@@ -24,34 +25,6 @@ interface MenuItem {
 	onClick: () => void;
 	name: string;
 }
-
-const drawerMenuItems: MenuItem[] = [
-	{
-		icon: <DashboardIcon />,
-		name: 'Dashboard',
-		onClick: () => {}
-	},
-	{
-		icon: <ShopIcon />,
-		name: 'Products',
-		onClick: () => {}
-	},
-	{
-		icon: <CategoryIcon />,
-		name: 'Categories',
-		onClick: () => {}
-	},
-	{
-		icon: <LocalShippingIcon />,
-		name: 'Orders',
-		onClick: () => {}
-	},
-	{
-		icon: <PeopleIcon />,
-		name: 'Customers',
-		onClick: () => {}
-	}
-];
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -103,12 +76,50 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function AppDrawer() {
 	const classes = useStyles();
 	const theme = useTheme();
+	const history = useHistory();
 
 	const { isDrawerOpen, setIsDrawerOpen } = useDrawerStore();
 
 	const handleDrawerClose = () => {
 		setIsDrawerOpen(false);
 	};
+
+	const drawerMenuItems: MenuItem[] = [
+		{
+			icon: <DashboardIcon />,
+			name: 'Dashboard',
+			onClick:
+				() => {
+					history.replace('/');
+				}
+		},
+		{
+			icon: <ShopIcon />,
+			name: 'Products',
+			onClick:
+				() => {
+					history.replace('/');
+				}
+		},
+		{
+			icon: <CategoryIcon />,
+			name: 'Categories',
+			onClick:
+				() => {
+					history.replace('/categories');
+				}
+		},
+		{
+			icon: <LocalShippingIcon />,
+			name: 'Orders',
+			onClick: () => {}
+		},
+		{
+			icon: <PeopleIcon />,
+			name: 'Customers',
+			onClick: () => {}
+		}
+	];
 
 	return (
 		<Drawer

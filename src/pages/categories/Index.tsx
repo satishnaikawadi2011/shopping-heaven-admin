@@ -85,7 +85,7 @@ const CategoryHome: React.FC<RouteComponentProps> = ({ history }) => {
 			<AddCategoryDialog open={open} handleClose={() => setOpen(false)} />
 			<div>
 				<Typography className={classes.title} variant="h3" component="h1">
-					Manage Products
+					Manage Categories
 				</Typography>
 				<div className={classes.addBtnContainer}>
 					<Button
