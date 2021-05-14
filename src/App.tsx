@@ -15,6 +15,7 @@ import AppForm from './components/form/AppForm';
 import AppFormField from './components/form/AppFormField';
 import SubmitButton from './components/form/SubmitButton';
 import AppSelectField from './components/form/AppSelectField';
+import NoData from './animations/components/NoData';
 // import OrderTable from './components/UI/OrderTable';
 // import DashboardIcon from '@material-ui/icons/Dashboard';
 // import LocalShippingIcon from '@material-ui/icons/LocalShipping';
@@ -30,13 +31,16 @@ const schema = Yup.object({
 
 function App() {
 	return (
-		<Router>
-			<Switch>
-				<Route path="/" component={ProductHome} exact />
-				<Route path="/products/:id" exact component={EditProduct} />
-				<Route component={NotFoundPage} />
-			</Switch>
-		</Router>
+		// <Router>
+		// 	<Switch>
+		// 		<Route path="/" component={ProductHome} exact />
+		// 		<Route path="/products/:id" exact component={EditProduct} />
+		// 		<Route component={NotFoundPage} />
+		// 	</Switch>
+		// </Router>
+		<LayoutWrapper>
+			<NoData message="No data found related to categories , add some." />
+		</LayoutWrapper>
 	);
 }
 
