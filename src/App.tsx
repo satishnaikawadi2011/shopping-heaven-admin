@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import * as Yup from 'yup';
 
@@ -7,6 +7,8 @@ import NotFoundPage from './animations/components/NotFoundPage';
 import EditProduct from './pages/products/EditProduct';
 import ProductHome from './pages/products';
 import CategoryHome from './pages/categories/Index';
+import AddCategoryDialog from './components/UI/AddCategoryDialog';
+import Button from '@material-ui/core/Button';
 // import OrderTable from './components/UI/OrderTable';
 // import DashboardIcon from '@material-ui/icons/Dashboard';
 // import LocalShippingIcon from '@material-ui/icons/LocalShipping';
@@ -14,22 +16,29 @@ import CategoryHome from './pages/categories/Index';
 // import CategoryIcon from '@material-ui/icons/Category';
 // import ShopIcon from '@material-ui/icons/Shop';
 
-const schema = Yup.object({
-	name: Yup.string().required(),
-	password: Yup.string().required(),
-	hobby: Yup.string().required()
-});
-
 function App() {
+	const [
+		open,
+		setOpen
+	] = useState(false);
+	const [
+		success,
+		setSuccess
+	] = useState(false);
 	return (
-		<Router>
-			<Switch>
-				<Route path="/" component={ProductHome} exact />
-				<Route path="/products/:id" exact component={EditProduct} />
-				<Route path="/categories" exact component={CategoryHome} />
-				<Route component={NotFoundPage} />
-			</Switch>
-		</Router>
+		<React.Fragment>
+			<Button onClick={() => setOpen(true)}>Open</Button>
+			<AddCategoryDialog open={open} onSuccess={() => setSuccess(true)} handleClose={() => setOpen(false)} />
+			{success && <h1>This is success!!</h1>}
+		</React.Fragment>
+		// <Router>
+		// 	<Switch>
+		// 		<Route path="/" component={ProductHome} exact />
+		// 		<Route path="/products/:id" exact component={EditProduct} />
+		// 		<Route path="/categories" exact component={CategoryHome} />
+		// 		<Route component={NotFoundPage} />
+		// 	</Switch>
+		// </Router>
 	);
 }
 

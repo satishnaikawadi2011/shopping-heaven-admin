@@ -11,7 +11,7 @@ const useStyles = makeStyles((props) => ({
 		},
 	field:
 		{
-			width: '100vw',
+			// width: '100vw',
 			maxWidth: 600
 		}
 }));
