@@ -17,28 +17,15 @@ import Button from '@material-ui/core/Button';
 // import ShopIcon from '@material-ui/icons/Shop';
 
 function App() {
-	const [
-		open,
-		setOpen
-	] = useState(false);
-	const [
-		success,
-		setSuccess
-	] = useState(false);
 	return (
-		<React.Fragment>
-			<Button onClick={() => setOpen(true)}>Open</Button>
-			<AddCategoryDialog open={open} onSuccess={() => setSuccess(true)} handleClose={() => setOpen(false)} />
-			{success && <h1>This is success!!</h1>}
-		</React.Fragment>
-		// <Router>
-		// 	<Switch>
-		// 		<Route path="/" component={ProductHome} exact />
-		// 		<Route path="/products/:id" exact component={EditProduct} />
-		// 		<Route path="/categories" exact component={CategoryHome} />
-		// 		<Route component={NotFoundPage} />
-		// 	</Switch>
-		// </Router>
+		<Router>
+			<Switch>
+				<Route path="/" component={ProductHome} exact />
+				<Route path="/products/:id" exact component={EditProduct} />
+				<Route path="/categories" exact component={CategoryHome} />
+				<Route component={NotFoundPage} />
+			</Switch>
+		</Router>
 	);
 }
 

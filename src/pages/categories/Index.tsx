@@ -1,5 +1,5 @@
 import { Button, makeStyles, Typography } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import { RouteComponentProps } from 'react-router';
 
@@ -13,6 +13,7 @@ import { useCategoryStore } from '../../store/categories';
 import LayoutWrapper from '../../components/layout/LayoutWrapper';
 import NoData from '../../animations/components/NoData';
 import CategoryTable from '../../components/UI/CategoryTable';
+import AddCategoryDialog from '../../components/UI/AddCategoryDialog';
 
 const useStyles = makeStyles((props) => ({
 	title:
@@ -24,6 +25,14 @@ const useStyles = makeStyles((props) => ({
 }));
 
 const CategoryHome: React.FC<RouteComponentProps> = ({ history }) => {
+	const [
+		open,
+		setOpen
+	] = useState(false);
+	const [
+		addCategorySuccess,
+		setAddCategorySuccess
+	] = useState(false);
 	const { categories, setCategories } = useCategoryStore();
 	const { data: categoryData, loading: catLoading, error: catError, request: getCategories } = useApi(
 		categoriesApi.getCategories
@@ -61,6 +70,11 @@ const CategoryHome: React.FC<RouteComponentProps> = ({ history }) => {
 	}
 	return (
 		<LayoutWrapper>
+			<AddCategoryDialog
+				open={open}
+				onSuccess={() => setAddCategorySuccess(true)}
+				handleClose={() => setOpen(false)}
+			/>
 			<div>
 				<Typography className={classes.title} variant="h3" component="h1">
 					Manage Products

@@ -20,13 +20,11 @@ import AppSelectField from '../../components/form/AppSelectField';
 import ImageCard from '../../components/UI/ImageCard';
 import useFileUpload from '../../hooks/useFileUpload';
 import SubmitButton from '../../components/form/SubmitButton';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import LayoutWrapper from '../../components/layout/LayoutWrapper';
+import AppAlert from '../../components/UI/AppAlert';
+import AppSnackbar from '../../components/UI/AppSnackbar';
 
-function Alert(props: AlertProps) {
-  return <MuiAlert style={{maxWidth:600,marginBottom:30}} elevation={6} variant="filled" {...props} />;
-}
 
 
 const useStyles = makeStyles((props) => ({
@@ -75,18 +73,19 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 				if (categoryData) {
 				setCategories(categoryData as any);
 			}
-			if (updatedProduct) {
-				setProduct(updatedProduct as any);
-			}
 		},
 		[
 			data,
 			categoryData,
 			setProduct,
-			setCategories,
-			updatedProduct
+			setCategories
 		]
 	);
+	useEffect(() => {
+					if (updatedProduct) {
+				setProduct(updatedProduct as any);
+			}
+	},[updatedProduct])
 	if (error || catError || uploadErr || updateError) {
 		return <LayoutWrapper>
 			<ErrorPage />
@@ -101,12 +100,13 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 			</LayoutWrapper>
 		);
 	}
+	const updatedData = updatedProduct as any
     const initialValues = {
-        title: product?.title,
-        price: product.price,
-		description: product.description,
-		category: product.categoryId,
-		image:product.image
+        title:updatedData ? updatedData.title :product?.title,
+        price:updatedData ? updatedData.price : product.price,
+		description: updatedData ? updatedData.description:product.description,
+		category: updatedData? updatedData.categoryId :product.categoryId,
+		image:updatedData ? updatedData.image :product.image
     }
     const produdctValidationSchema = Yup.object({
         title: Yup.string().required(),
@@ -132,16 +132,11 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 		}
 		await updateProduct(AUTH_TOKEN_FOR_DEVELOPMENT, productData)
 		setIsSnackbarOpen(true);
-		// console.log(productData)
 	
 	}
 	return (
 		<LayoutWrapper>
-			     <Snackbar open={isSnackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
-        <Alert onClose={handleSnackbarClose} severity="success">
-          Updated the product info successfully !!!!
-        </Alert>
-      </Snackbar>
+			<AppSnackbar handleSnackbarClose={handleSnackbarClose} message='Updated the product info successfully !!!!' open={isSnackbarOpen} />
 			<div>
 			<div>
 				<Typography className={classes.title} variant="h3" component="h1">
@@ -160,31 +155,35 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 				<FormContainer>
                     <AppForm initialValues={initialValues} validationSchema={produdctValidationSchema} onSubmit={submitHandler}>
 						<div>
-							<Alert severity="warning">Remember to click <b>Update Product</b> button present at bottom after editing otherwise product will not be updated!!</Alert>
+							<AppAlert style={{maxWidth:600,marginBottom:30}} severity="warning">Remember to click <b>Update Product</b> button present at bottom after editing otherwise product will not be updated!!</AppAlert>
                         <AppFormField
                         fieldName='title'
                         label='Title'
                         placeholder='Title for product ...'
-                        variant='filled'
+									variant='filled'
+									fullWidth
                     />
                     <AppFormField
                         fieldName='price'
                         label='Price'
                         placeholder='Price for product ...'
-                        variant='filled'
+									variant='filled'
+									fullWidth
                     />
                     <AppFormField
                         fieldName='description'
                         label='Description'
                         placeholder='Description for product ...'
                             variant='filled'
-                            multiline
+									multiline
+									fullWidth
 							/>
 							<AppSelectField fieldName='category' options={options} label='Category' />
 							                    <AppFormField
                         fieldName='image'
 								label='Image'
-								disabled
+									disabled
+									fullWidth
 								variant='filled'
 								value={image ? image : product.image}
 							/>
