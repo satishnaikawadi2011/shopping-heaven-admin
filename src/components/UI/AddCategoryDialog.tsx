@@ -20,7 +20,6 @@ import { FormHelperText } from '@material-ui/core';
 interface AddCatProps {
 	open: boolean;
 	handleClose: () => void;
-	onSuccess?: () => void;
 }
 
 const initialValues = {
@@ -31,8 +30,7 @@ const validationSchema = Yup.object({
 	name: Yup.string().required('Category name is required !!')
 });
 
-const AddCategoryDialog: React.FC<AddCatProps> = ({ handleClose, open, onSuccess }) => {
-	const { addCategory } = useCategoryStore();
+const AddCategoryDialog: React.FC<AddCatProps> = ({ handleClose, open }) => {
 	const { data, error, loading, request } = useApi(categoriesApi.createCategory);
 	const submitHandler = (values: any) => {
 		request(AUTH_TOKEN_FOR_DEVELOPMENT, values.name);
@@ -40,19 +38,13 @@ const AddCategoryDialog: React.FC<AddCatProps> = ({ handleClose, open, onSuccess
 	useEffect(
 		() => {
 			if (data && !error) {
-				addCategory(data as any);
 				handleClose();
-				if (onSuccess) {
-					onSuccess();
-				}
 			}
 		},
 		[
 			data,
-			addCategory,
 			handleClose,
-			error,
-			onSuccess
+			error
 		]
 	);
 	return (

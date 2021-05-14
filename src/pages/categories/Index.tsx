@@ -14,7 +14,6 @@ import LayoutWrapper from '../../components/layout/LayoutWrapper';
 import NoData from '../../animations/components/NoData';
 import CategoryTable from '../../components/UI/CategoryTable';
 import AddCategoryDialog from '../../components/UI/AddCategoryDialog';
-import AppSnackbar from '../../components/UI/AppSnackbar';
 
 const useStyles = makeStyles((props) => ({
 	title:
@@ -41,14 +40,19 @@ const CategoryHome: React.FC<RouteComponentProps> = ({ history }) => {
 
 		setAddCategorySuccess(false);
 	};
-	const { categories, setCategories } = useCategoryStore();
+	const { categories, setCategories, addCategory } = useCategoryStore();
 	const { data: categoryData, loading: catLoading, error: catError, request: getCategories } = useApi(
 		categoriesApi.getCategories
 	);
 	const classes = useStyles();
-	useEffect(() => {
-		getCategories(AUTH_TOKEN_FOR_DEVELOPMENT);
-	}, []);
+	useEffect(
+		() => {
+			getCategories(AUTH_TOKEN_FOR_DEVELOPMENT);
+		},
+		[
+			open
+		]
+	);
 	useEffect(
 		() => {
 			if (categoryData) {
@@ -78,16 +82,7 @@ const CategoryHome: React.FC<RouteComponentProps> = ({ history }) => {
 	}
 	return (
 		<LayoutWrapper>
-			<AddCategoryDialog
-				open={open}
-				onSuccess={() => setAddCategorySuccess(true)}
-				handleClose={() => setOpen(false)}
-			/>
-			{/* <AppSnackbar
-				handleSnackbarClose={handleSnackbarClose}
-				message="Added new product category successfully !!!!"
-				open={addCategorySuccess}
-			/> */}
+			<AddCategoryDialog open={open} handleClose={() => setOpen(false)} />
 			<div>
 				<Typography className={classes.title} variant="h3" component="h1">
 					Manage Products
