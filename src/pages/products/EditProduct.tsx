@@ -20,10 +20,10 @@ import AppSelectField from '../../components/form/AppSelectField';
 import ImageCard from '../../components/UI/ImageCard';
 import useFileUpload from '../../hooks/useFileUpload';
 import SubmitButton from '../../components/form/SubmitButton';
-import Snackbar from '@material-ui/core/Snackbar';
 import LayoutWrapper from '../../components/layout/LayoutWrapper';
 import AppAlert from '../../components/UI/AppAlert';
 import AppSnackbar from '../../components/UI/AppSnackbar';
+import { FormikHelpers } from 'formik';
 
 
 
@@ -39,9 +39,19 @@ const useStyles = makeStyles((props) => ({
 	}
 }));
 
+	type Values = {
+		title: string;
+		price: number;
+		description:string;
+		category: string;
+		image:string;
+	}
+
 const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, history }) => {
 	const productId = match.params.id;
 	const [isSnackbarOpen, setIsSnackbarOpen] = useState(false)
+	const [updateLoad, setUpdateLoad] = useState(false);
+	const [updateError, setUpdateError] = useState(false);
 	const handleSnackbarClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return;
@@ -59,7 +69,6 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 	const { data: categoryData, loading: catLoading, error: catError, request: getCategories } = useApi(
 		categoriesApi.getCategories
 	);
-	const {data:updatedProduct,error:updateError,loading:updateLoad,request:updateProduct} = useApi(productsApi.updateProduct)
 	const { error: uploadErr, image, request: uploadImage, uploading } = useFileUpload(AUTH_TOKEN_FOR_DEVELOPMENT)
 	useEffect(() => {
 		getProduct(AUTH_TOKEN_FOR_DEVELOPMENT, productId);
@@ -81,11 +90,6 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 			setCategories
 		]
 	);
-	useEffect(() => {
-					if (updatedProduct) {
-				setProduct(updatedProduct as any);
-			}
-	},[updatedProduct])
 	if (error || catError || uploadErr || updateError) {
 		return <LayoutWrapper>
 			<ErrorPage />
@@ -100,14 +104,13 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 			</LayoutWrapper>
 		);
 	}
-	const updatedData = updatedProduct as any
     const initialValues = {
-        title:updatedData ? updatedData.title :product?.title,
-        price:updatedData ? updatedData.price : product.price,
-		description: updatedData ? updatedData.description:product.description,
-		category: updatedData? updatedData.categoryId :product.categoryId,
-		image:updatedData ? updatedData.image :product.image
-    }
+        title:product?.title,
+        price:product.price,
+		description:product.description,
+		category: product.categoryId,
+		image:product.image
+	}
     const produdctValidationSchema = Yup.object({
         title: Yup.string().required(),
         price: Yup.number().integer().positive(),
@@ -121,7 +124,7 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 			value:cat._id
 		}
 	})
-	const submitHandler = async (values: any) => {
+	const submitHandler = async (values: any,actions:FormikHelpers<Values>) => {
 		const productData: UpdateProductData = {
 			_id: product._id,
 			categoryId: values.category,
@@ -130,9 +133,15 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 			price: values.price,
 			title:values.title
 		}
-		await updateProduct(AUTH_TOKEN_FOR_DEVELOPMENT, productData)
+		setUpdateLoad(true);
+		const response = await productsApi.updateProduct(AUTH_TOKEN_FOR_DEVELOPMENT, productData)
+		setUpdateLoad(false)
+
+		if (!response.ok) return setUpdateError(true);
+
+		setUpdateError(false)
+		window.location.reload();
 		setIsSnackbarOpen(true);
-	
 	}
 	return (
 		<LayoutWrapper>

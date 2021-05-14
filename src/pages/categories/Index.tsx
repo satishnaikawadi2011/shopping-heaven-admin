@@ -14,6 +14,7 @@ import LayoutWrapper from '../../components/layout/LayoutWrapper';
 import NoData from '../../animations/components/NoData';
 import CategoryTable from '../../components/UI/CategoryTable';
 import AddCategoryDialog from '../../components/UI/AddCategoryDialog';
+import AppSnackbar from '../../components/UI/AppSnackbar';
 
 const useStyles = makeStyles((props) => ({
 	title:
@@ -33,6 +34,13 @@ const CategoryHome: React.FC<RouteComponentProps> = ({ history }) => {
 		addCategorySuccess,
 		setAddCategorySuccess
 	] = useState(false);
+	const handleSnackbarClose = (event?: React.SyntheticEvent, reason?: string) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+
+		setAddCategorySuccess(false);
+	};
 	const { categories, setCategories } = useCategoryStore();
 	const { data: categoryData, loading: catLoading, error: catError, request: getCategories } = useApi(
 		categoriesApi.getCategories
@@ -75,12 +83,22 @@ const CategoryHome: React.FC<RouteComponentProps> = ({ history }) => {
 				onSuccess={() => setAddCategorySuccess(true)}
 				handleClose={() => setOpen(false)}
 			/>
+			{/* <AppSnackbar
+				handleSnackbarClose={handleSnackbarClose}
+				message="Added new product category successfully !!!!"
+				open={addCategorySuccess}
+			/> */}
 			<div>
 				<Typography className={classes.title} variant="h3" component="h1">
 					Manage Products
 				</Typography>
 				<div className={classes.addBtnContainer}>
-					<Button variant="contained" className={classes.addBtn} onClick={() => {}} startIcon={<AddIcon />}>
+					<Button
+						variant="contained"
+						className={classes.addBtn}
+						onClick={() => setOpen(true)}
+						startIcon={<AddIcon />}
+					>
 						Add Category
 					</Button>
 				</div>
