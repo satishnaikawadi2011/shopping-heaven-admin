@@ -11,6 +11,7 @@ import AddCategoryDialog from './components/UI/AddCategoryDialog';
 import Button from '@material-ui/core/Button';
 import OrderHome from './pages/orders/Index';
 import OrderDetails from './pages/orders/OrderDetails';
+import UserHome from './pages/users';
 // import OrderTable from './components/UI/OrderTable';
 // import DashboardIcon from '@material-ui/icons/Dashboard';
 // import LocalShippingIcon from '@material-ui/icons/LocalShipping';
@@ -27,6 +28,7 @@ function App() {
 				<Route path="/categories" exact component={CategoryHome} />
 				<Route path="/orders" exact component={OrderHome} />
 				<Route path="/orders/:id" exact component={OrderDetails} />
+				<Route path="/users" exact component={UserHome} />
 				<Route component={NotFoundPage} />
 			</Switch>
 		</Router>

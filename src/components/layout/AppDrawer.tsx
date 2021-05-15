@@ -120,7 +120,9 @@ export default function AppDrawer() {
 		{
 			icon: <PeopleIcon />,
 			name: 'Customers',
-			onClick: () => {}
+			onClick: () => {
+				history.replace('/users')
+			}
 		}
 	];
 

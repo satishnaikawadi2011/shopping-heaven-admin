@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withStyles, Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -15,6 +15,10 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { IconButton } from '@material-ui/core';
 
 import { User } from '../../models/User';
+import { useUserStore } from '../../store/users';
+import usersApi from '../../api/users'
+import { AUTH_TOKEN_FOR_DEVELOPMENT } from '../../constants';
+import AppAlertDialog from '../AppAlertDialog';
 
 const StyledTableCell = withStyles((theme: Theme) =>
 	createStyles({
@@ -55,7 +59,49 @@ interface CustomerTableProps {
 
 const CustomerTable: React.FC<CustomerTableProps> = ({ customers }) => {
 	const classes = useStyles();
+	const { removeUser, toggleAsAdmin } = useUserStore();
+	const [isDeleting, setIsDeleting] = useState(false);
+	const [
+		user,
+		setUser
+	] = useState<User>();
+	const [
+		openAlert,
+		setOpenAlert
+	] = useState(false);
+	const handleCloseAlert = () => {
+		setOpenAlert(false);
+	};
+	const handleDelete = () => {
+		removeUser(user!._id)
+		usersApi.deleteUser(AUTH_TOKEN_FOR_DEVELOPMENT, user!._id);
+		handleCloseAlert();
+	};
+	const handleToggleIsAdmin = () => {
+			toggleAsAdmin(user!._id ,!user?.isAdmin)
+		usersApi.toggleAdminPrevillages(AUTH_TOKEN_FOR_DEVELOPMENT,user!.username,!user!.isAdmin );
+		handleCloseAlert();
+	};
+	const getTitleAndDescOfAlert = () => {
+		if (isDeleting) {
+			return ['Are you sure you want to remove this user from this app ?','Delete User']
+		} else {
+			if (user?.isAdmin) {
+				return ['Are you sure you want to take back admin previleges from this user ?','Admin Previleges']
+			} else {
+				return ['Are you sure you want to give admin previleges to this user ?','Admin Previleges']
+			}
+		}
+		}
 	return (
+		<React.Fragment>
+			<AppAlertDialog
+				description={getTitleAndDescOfAlert()[0]}
+				handleClose={handleCloseAlert}
+				open={openAlert}
+				title={getTitleAndDescOfAlert()[1]}
+				onAgree={isDeleting ? handleDelete:handleToggleIsAdmin}
+			/>
 		<TableContainer component={Paper}>
 			<Table className={classes.table} aria-label="customized table">
 				<TableHead>
@@ -93,11 +139,19 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers }) => {
 											'Make Admin'
 									}
 								>
-									<IconButton aria-label="edit">
+									<IconButton aria-label="edit" onClick={() => {
+										setIsDeleting(false);
+										setUser(customer)
+										setOpenAlert(true)
+									}}>
 										<EditIcon style={{ color: 'blue' }} />
 									</IconButton>
 								</Tooltip>
-								<Tooltip title="Delete">
+								<Tooltip title="Delete" onClick={() => {
+										setIsDeleting(true);
+										setUser(customer)
+										setOpenAlert(true)
+									}}>
 									<IconButton aria-label="delete">
 										<DeleteIcon style={{ color: 'red' }} />
 									</IconButton>
@@ -108,6 +162,7 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers }) => {
 				</TableBody>
 			</Table>
 		</TableContainer>
+		</React.Fragment>
 	);
 };
 
