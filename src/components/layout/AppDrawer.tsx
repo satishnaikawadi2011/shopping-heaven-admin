@@ -90,7 +90,7 @@ export default function AppDrawer() {
 			name: 'Dashboard',
 			onClick:
 				() => {
-					history.replace('/');
+					history.replace('/dashboard');
 				}
 		},
 		{
@@ -98,7 +98,7 @@ export default function AppDrawer() {
 			name: 'Products',
 			onClick:
 				() => {
-					history.replace('/');
+					history.replace('/products');
 				}
 		},
 		{
@@ -120,9 +120,10 @@ export default function AppDrawer() {
 		{
 			icon: <PeopleIcon />,
 			name: 'Customers',
-			onClick: () => {
-				history.replace('/users')
-			}
+			onClick:
+				() => {
+					history.replace('/users');
+				}
 		}
 	];
 

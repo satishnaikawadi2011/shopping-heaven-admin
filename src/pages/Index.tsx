@@ -1,18 +1,18 @@
 import { Typography } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import * as Yup from 'yup';
-import AppForm from '../../components/form/AppForm';
-import AppFormField from '../../components/form/AppFormField';
-import SubmitButton from '../../components/form/SubmitButton';
+import AppForm from '../components/form/AppForm';
+import AppFormField from '../components/form/AppFormField';
+import SubmitButton from '../components/form/SubmitButton';
 
-import LayoutWrapper from '../../components/layout/LayoutWrapper';
-import authApi from '../../api/auth';
-import useApi from '../../hooks/useApi';
-import AppErrorMessage from '../../components/form/AppErrorMessage';
-import { useAuthStore } from '../../store/auth';
-import AppLoader from '../../animations/components/AppLoader';
+import LayoutWrapper from '../components/layout/LayoutWrapper';
+import authApi from '../api/auth';
+import useApi from '../hooks/useApi';
+import AppErrorMessage from '../components/form/AppErrorMessage';
+import { useAuthStore } from '../store/auth';
+import AppLoader from '../animations/components/AppLoader';
 import { RouteComponentProps } from 'react-router';
-import storage from '../../utils/storage';
+import storage from '../utils/storage';
 
 const initialValues = {
 	username: '',
@@ -38,7 +38,7 @@ const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
 				setToken(loginData.token as any);
 				setUser(loginData.user as any);
 				storage.store('authData', { user: loginData.user, token: loginData.token });
-				history.replace('/products');
+				history.replace('/dashboard');
 			}
 		},
 		[
@@ -48,7 +48,7 @@ const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
 	useEffect(
 		() => {
 			if (user && token) {
-				history.replace('/products');
+				history.replace('/dashboard');
 			}
 		},
 		[

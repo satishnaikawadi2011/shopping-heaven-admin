@@ -7,7 +7,8 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles((props) => ({
 	root:
 		{
-			minWidth: 275
+			minWidth: 275,
+			height: 300
 		},
 	title:
 		{
@@ -36,7 +37,10 @@ interface CardProps {
 const StatCard: React.FC<CardProps> = ({ icon, stat, title, backgroundColor, color }) => {
 	const classes = useStyles();
 	return (
-		<Card style={{ backgroundColor }} className={classes.root}>
+		<Card
+			style={{ backgroundColor, justifyContent: 'center', alignItems: 'center', display: 'flex' }}
+			className={classes.root}
+		>
 			<CardContent>
 				<Typography style={{ color }} className={classes.title} variant="h3">
 					{title}

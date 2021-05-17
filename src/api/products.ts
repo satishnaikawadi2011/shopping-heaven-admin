@@ -36,12 +36,18 @@ const updateProduct = (token: string | null, product: UpdateProductData) => {
 	return client.patch(`${endpoint}/${product._id}`, product);
 };
 
+const getStats = (token: string | null) => {
+	client.setHeader('Authorization', `Bearer ${token}`);
+	return client.get(`/stats`);
+};
+
 const apiMethods = {
 	getProducts,
 	deleteProduct,
 	createProduct,
 	getProduct,
-	updateProduct
+	updateProduct,
+	getStats
 };
 
 export default apiMethods;
