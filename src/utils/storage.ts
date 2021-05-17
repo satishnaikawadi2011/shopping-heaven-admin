@@ -1,20 +1,25 @@
 const prefix = 'shopping-heaven-storage';
 
-const store = async (key: string, value: any) => {
+const store = (key: string, value: any) => {
 	localStorage.setItem(prefix + key, JSON.stringify(value));
 };
 
-const get = async (key: string) => {
+const get = (key: string) => {
 	const item: any = localStorage.getItem(prefix + key);
 	const value = JSON.parse(item);
 	if (!value) return null;
 
-	return item;
+	return value;
+};
+
+const remove = (key: string) => {
+	localStorage.removeItem(prefix + key);
 };
 
 const storageMethods = {
 	store,
-	get
+	get,
+	remove
 };
 
 export default storageMethods;

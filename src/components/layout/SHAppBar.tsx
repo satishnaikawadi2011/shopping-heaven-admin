@@ -10,6 +10,9 @@ import { useDrawerStore } from '../../store/drawer';
 import { Button } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import InfoIcon from '@material-ui/icons/Info';
+import { useAuthStore } from '../../store/auth';
+import { useHistory } from 'react-router';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 
 const drawerWidth = 240;
 
@@ -62,13 +65,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function SHAppBar() {
+	const history = useHistory();
 	const classes = useStyles();
 	const { isDrawerOpen, setIsDrawerOpen } = useDrawerStore();
-
+	const { user, token, logout } = useAuthStore();
 	const handleDrawerOpen = () => {
 		setIsDrawerOpen(true);
 	};
-
+	const isAuthenticated = !!user && !!token;
 	return (
 		<AppBar
 			position="fixed"
@@ -77,26 +81,32 @@ export default function SHAppBar() {
 			})}
 		>
 			<Toolbar>
-				<IconButton
-					color="inherit"
-					aria-label="open drawer"
-					onClick={handleDrawerOpen}
-					edge="start"
-					className={clsx(classes.menuButton, {
-						[classes.hide]: isDrawerOpen
-					})}
-				>
-					<MenuIcon />
-				</IconButton>
+				{
+					isAuthenticated ? <IconButton
+						color="inherit"
+						aria-label="open drawer"
+						onClick={handleDrawerOpen}
+						edge="start"
+						className={clsx(classes.menuButton, {
+							[classes.hide]: isDrawerOpen
+						})}
+					>
+						<MenuIcon />
+					</IconButton> :
+					null}
 				<Typography className={classes.title} variant="h6" noWrap>
 					Shopping Heaven
 				</Typography>
 				<Button style={{ marginRight: 20 }} color="inherit" startIcon={<InfoIcon />}>
 					About
 				</Button>
-				<Button color="inherit" startIcon={<ExitToAppIcon />}>
-					Logout
-				</Button>
+				{
+					isAuthenticated ? <Button onClick={() => logout()} color="inherit" startIcon={<ExitToAppIcon />}>
+						Logout
+					</Button> :
+					<Button onClick={() => history.push('/')} color="inherit" startIcon={<VpnKeyIcon />}>
+						Login
+					</Button>}
 			</Toolbar>
 		</AppBar>
 	);
