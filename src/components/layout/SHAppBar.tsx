@@ -97,7 +97,12 @@ export default function SHAppBar() {
 				<Typography className={classes.title} variant="h6" noWrap>
 					Shopping Heaven
 				</Typography>
-				<Button style={{ marginRight: 20 }} color="inherit" startIcon={<InfoIcon />}>
+				<Button
+					style={{ marginRight: 20 }}
+					onClick={() => history.push('/about')}
+					color="inherit"
+					startIcon={<InfoIcon />}
+				>
 					About
 				</Button>
 				{

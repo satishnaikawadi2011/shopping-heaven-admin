@@ -14,6 +14,7 @@ import ProtectedRoute from './components/utility/ProtectedRoute';
 import { useAuthStore } from './store/auth';
 import storage from './utils/storage';
 import DashboardPage from './pages/dashboard/Index';
+import AboutHome from './pages/about/Index';
 
 function App() {
 	const { setToken, setUser } = useAuthStore();
@@ -36,6 +37,7 @@ function App() {
 				<ProtectedRoute path="/orders/:id" exact component={OrderDetails} />
 				<ProtectedRoute path="/users" exact component={UserHome} />
 				<Route path="/" exact component={LoginPage} />
+				<Route path="/about" exact component={AboutHome} />
 				<Route component={NotFoundPage} />
 			</Switch>
 		</Router>
