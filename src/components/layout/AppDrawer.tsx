@@ -16,7 +16,7 @@ import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import PeopleIcon from '@material-ui/icons/People';
 import CategoryIcon from '@material-ui/icons/Category';
 import ShopIcon from '@material-ui/icons/Shop';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 
 const drawerWidth = 240;
 
@@ -24,6 +24,7 @@ interface MenuItem {
 	icon: any;
 	onClick: () => void;
 	name: string;
+	pathname: string;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -69,14 +70,27 @@ const useStyles = makeStyles((theme: Theme) =>
 			{
 				flexGrow: 1,
 				padding: theme.spacing(3)
+			},
+		activeMenuItem:
+			{
+				backgroundColor: theme.palette.primary.main
 			}
 	})
 );
+
+const checkPathname = (pathname: string, location: any): boolean => {
+	console.log(location.pathname.split('/'), 'its it');
+	if (location.pathname.split('/').includes(pathname)) {
+		return true;
+	}
+	return false;
+};
 
 export default function AppDrawer() {
 	const classes = useStyles();
 	const theme = useTheme();
 	const history = useHistory();
+	const location = useLocation();
 
 	const { isDrawerOpen, setIsDrawerOpen } = useDrawerStore();
 
@@ -91,11 +105,13 @@ export default function AppDrawer() {
 			onClick:
 				() => {
 					history.replace('/dashboard');
-				}
+				},
+			pathname: 'dashboard'
 		},
 		{
 			icon: <ShopIcon />,
 			name: 'Products',
+			pathname: 'products',
 			onClick:
 				() => {
 					history.replace('/products');
@@ -103,6 +119,7 @@ export default function AppDrawer() {
 		},
 		{
 			icon: <CategoryIcon />,
+			pathname: 'categories',
 			name: 'Categories',
 			onClick:
 				() => {
@@ -112,6 +129,7 @@ export default function AppDrawer() {
 		{
 			icon: <LocalShippingIcon />,
 			name: 'Orders',
+			pathname: 'orders',
 			onClick:
 				() => {
 					history.replace('/orders');
@@ -120,6 +138,7 @@ export default function AppDrawer() {
 		{
 			icon: <PeopleIcon />,
 			name: 'Customers',
+			pathname: 'users',
 			onClick:
 				() => {
 					history.replace('/users');
@@ -151,8 +170,17 @@ export default function AppDrawer() {
 			</div>
 			<Divider />
 			<List>
-				{drawerMenuItems.map(({ icon, name, onClick }) => (
-					<ListItem onClick={onClick} button key={name}>
+				{drawerMenuItems.map(({ icon, name, onClick, pathname }) => (
+					<ListItem
+						onClick={onClick}
+						className={
+
+								checkPathname(pathname, location) ? classes.activeMenuItem :
+								''
+						}
+						button
+						key={name}
+					>
 						<ListItemIcon>{icon}</ListItemIcon>
 						<ListItemText primary={name} />
 					</ListItem>
