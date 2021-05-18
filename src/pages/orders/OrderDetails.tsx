@@ -35,7 +35,8 @@ const useStyles = makeStyles({
 		},
 	card: {
 		padding: 100,
-		width: 400,
+		width: 600,
+		maxWidth: 600,
 	},
 	sectionTitle:
 		{
@@ -287,7 +288,7 @@ const OrderDetails: React.FC<RouteComponentProps<{ id: string }>> = ({ match }) 
 							</div>
 							<Divider />
 							{order?.paymentResult?.receipt_url && 
-								<Button onClick={() => window.location.replace((order.paymentResult as any).receipt_url)}>
+								<Button variant='contained' color='primary' onClick={() => window.location.replace((order.paymentResult as any).receipt_url)}>
 								get receipt
 								</Button>}
 						</section>}
