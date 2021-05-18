@@ -13,7 +13,13 @@ interface SubmitButtonProps {
 const SubmitButton: React.FC<SubmitButtonProps> = ({ variant, style, title, loading, disabled }) => {
 	const { handleSubmit } = useFormikContext();
 	return (
-		<Button style={style} variant={variant} disabled={disabled || loading} onClick={handleSubmit as any}>
+		<Button
+			style={style}
+			color="primary"
+			variant={variant}
+			disabled={disabled || loading}
+			onClick={handleSubmit as any}
+		>
 			{title}
 		</Button>
 	);

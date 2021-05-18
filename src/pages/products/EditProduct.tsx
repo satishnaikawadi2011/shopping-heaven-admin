@@ -1,4 +1,4 @@
-import { Button, makeStyles, Typography } from '@material-ui/core';
+import { Button, makeStyles, Typography, useTheme } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { RouteComponentProps } from 'react-router';
@@ -48,6 +48,7 @@ const useStyles = makeStyles((props) => ({
 	}
 
 const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, history }) => {
+	const theme = useTheme();
 	const productId = match.params.id;
 	const [isSnackbarOpen, setIsSnackbarOpen] = useState(false)
 	const [updateLoad, setUpdateLoad] = useState(false);
@@ -155,7 +156,8 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 					<Button
 						onClick={() => history.goBack()}
 						variant="contained"
-						className={classes.backBtn}
+							className={classes.backBtn}
+							color='primary'
 						startIcon={<ArrowBackIcon />}
 					>
 						Go Back
@@ -199,7 +201,8 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 							{uploading ? <AppLoader height={100} width={100}/> :<ImageCard title={product.title!} image={`${IMAGE_URL_PREFIX}${image ? image :product.image}`} />}
 							<Button
 								variant="contained"
-								component="label"
+									component="label"
+									color='secondary'
 								className={classes.uploadButton}
 >
   Upload File

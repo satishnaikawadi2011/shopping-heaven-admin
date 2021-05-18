@@ -41,6 +41,10 @@ function App() {
 					{
 						main: '#c51162'
 					},
+				secondary:
+					{
+						main: '#651fff'
+					},
 				type:
 
 						isDark ? 'dark' :

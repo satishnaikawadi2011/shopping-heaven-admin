@@ -91,6 +91,7 @@ const CategoryHome: React.FC<RouteComponentProps> = ({ history }) => {
 					<Button
 						variant="contained"
 						className={classes.addBtn}
+						color="primary"
 						onClick={() => setOpen(true)}
 						startIcon={<AddIcon />}
 					>

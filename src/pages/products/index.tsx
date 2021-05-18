@@ -97,6 +97,7 @@ const Index: React.FC<RouteComponentProps> = ({ history }) => {
 						variant="contained"
 						className={classes.addBtn}
 						onClick={handleAddProduct}
+						color="primary"
 						startIcon={<AddIcon />}
 					>
 						Add Product
