@@ -5,6 +5,7 @@ import AppDrawer from './AppDrawer';
 
 interface LayoutProps {
 	noDrawer?: boolean;
+	noMenu?: boolean;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -30,11 +31,11 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-const LayoutWrapper: React.FC<LayoutProps> = ({ children, noDrawer = false }) => {
+const LayoutWrapper: React.FC<LayoutProps> = ({ children, noDrawer = false, noMenu = false }) => {
 	const classes = useStyles();
 	return (
 		<div className={classes.root}>
-			<SHAppBar />
+			<SHAppBar noMenu={noMenu} />
 			{!noDrawer && <AppDrawer />}
 			<main className={classes.content}>
 				<div className={classes.toolbar} />

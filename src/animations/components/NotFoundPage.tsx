@@ -22,7 +22,7 @@ interface NotFoundPageProps {
 
 const NotFoundPage: React.FC<NotFoundPageProps> = ({ height = 500, width = 500 }) => {
 	return (
-		<LayoutWrapper noDrawer>
+		<LayoutWrapper noDrawer noMenu>
 			<div>
 				<Lottie options={defaultOptions} height={height} width={width} />;
 				<Typography variant="h3" style={{ textAlign: 'center' }}>

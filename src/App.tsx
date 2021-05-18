@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 import './App.css';
 import NotFoundPage from './animations/components/NotFoundPage';
@@ -15,32 +16,55 @@ import { useAuthStore } from './store/auth';
 import storage from './utils/storage';
 import DashboardPage from './pages/dashboard/Index';
 import AboutHome from './pages/about/Index';
+import { useThemeStore } from './store/theme';
+import { CssBaseline } from '@material-ui/core';
 
 function App() {
 	const { setToken, setUser } = useAuthStore();
+	const { isDark, setIsDark } = useThemeStore();
 	useEffect(() => {
 		const authData: any = storage.get('authData');
-		console.log(authData);
+		const themeData: any = storage.get('themeData');
+		// console.log(authData);
 		if (authData) {
 			setToken(authData.token);
 			setUser(authData.user);
 		}
+		if (themeData) {
+			setIsDark(themeData.isDark);
+		}
 	}, []);
+	const theme = createMuiTheme({
+		palette:
+			{
+				primary:
+					{
+						main: '#c51162'
+					},
+				type:
+
+						isDark ? 'dark' :
+						'light'
+			}
+	});
 	return (
-		<Router>
-			<Switch>
-				<ProtectedRoute path="/dashboard" component={DashboardPage} exact />
-				<ProtectedRoute path="/products" component={ProductHome} exact />
-				<ProtectedRoute path="/products/:id" exact component={EditProduct} />
-				<ProtectedRoute path="/categories" exact component={CategoryHome} />
-				<ProtectedRoute path="/orders" exact component={OrderHome} />
-				<ProtectedRoute path="/orders/:id" exact component={OrderDetails} />
-				<ProtectedRoute path="/users" exact component={UserHome} />
-				<Route path="/" exact component={LoginPage} />
-				<Route path="/about" exact component={AboutHome} />
-				<Route component={NotFoundPage} />
-			</Switch>
-		</Router>
+		<ThemeProvider theme={theme}>
+			<CssBaseline />
+			<Router>
+				<Switch>
+					<ProtectedRoute path="/dashboard" component={DashboardPage} exact />
+					<ProtectedRoute path="/products" component={ProductHome} exact />
+					<ProtectedRoute path="/products/:id" exact component={EditProduct} />
+					<ProtectedRoute path="/categories" exact component={CategoryHome} />
+					<ProtectedRoute path="/orders" exact component={OrderHome} />
+					<ProtectedRoute path="/orders/:id" exact component={OrderDetails} />
+					<ProtectedRoute path="/users" exact component={UserHome} />
+					<Route path="/" exact component={LoginPage} />
+					<Route path="/about" exact component={AboutHome} />
+					<Route component={NotFoundPage} />
+				</Switch>
+			</Router>
+		</ThemeProvider>
 	);
 }
 

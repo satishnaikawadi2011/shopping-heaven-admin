@@ -5,7 +5,7 @@ import LayoutWrapper from '../../components/layout/LayoutWrapper';
 
 const AboutHome = () => {
 	return (
-		<LayoutWrapper noDrawer>
+		<LayoutWrapper noDrawer noMenu>
 			<div style={{ textAlign: 'center' }}>
 				<Typography variant="h2" component="h1">
 					Shopping Heaven

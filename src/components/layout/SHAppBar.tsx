@@ -13,6 +13,9 @@ import InfoIcon from '@material-ui/icons/Info';
 import { useAuthStore } from '../../store/auth';
 import { useHistory } from 'react-router';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import { useThemeStore } from '../../store/theme';
 
 const drawerWidth = 240;
 
@@ -64,11 +67,12 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-export default function SHAppBar() {
+export default function SHAppBar({ noMenu }: { noMenu?: boolean }) {
 	const history = useHistory();
 	const classes = useStyles();
 	const { isDrawerOpen, setIsDrawerOpen } = useDrawerStore();
 	const { user, token, logout } = useAuthStore();
+	const { isDark, setIsDark } = useThemeStore();
 	const handleDrawerOpen = () => {
 		setIsDrawerOpen(true);
 	};
@@ -82,7 +86,7 @@ export default function SHAppBar() {
 		>
 			<Toolbar>
 				{
-					isAuthenticated ? <IconButton
+					isAuthenticated && !noMenu ? <IconButton
 						color="inherit"
 						aria-label="open drawer"
 						onClick={handleDrawerOpen}
@@ -97,6 +101,11 @@ export default function SHAppBar() {
 				<Typography className={classes.title} variant="h6" noWrap>
 					Shopping Heaven
 				</Typography>
+				<IconButton aria-label="theme" onClick={() => setIsDark(!isDark)}>
+					{
+						isDark ? <Brightness7Icon style={{ color: '#ffffff' }} /> :
+						<Brightness4Icon style={{ color: '#ffffff' }} />}
+				</IconButton>
 				<Button
 					style={{ marginRight: 20 }}
 					onClick={() => history.push('/about')}
