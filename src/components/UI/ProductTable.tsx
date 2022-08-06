@@ -14,11 +14,12 @@ import { IconButton } from '@material-ui/core';
 import { useHistory } from 'react-router';
 
 import { Product } from '../../models/Product';
-import { AUTH_TOKEN_FOR_DEVELOPMENT, INDIAN_RUPEE_SIGN } from '../../constants';
+import { INDIAN_RUPEE_SIGN } from '../../constants';
 import productsApi from '../../api/products';
 import { useProductStore } from '../../store/products';
 import { Category } from '../../models/Category';
 import AppAlertDialog from '../AppAlertDialog';
+import { useAuthStore } from '../../store/auth';
 
 const StyledTableCell = withStyles((theme: Theme) =>
 	createStyles({
@@ -73,16 +74,16 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, categories }) => 
 		setOpenAlert(false);
 	};
 	const { removeProduct } = useProductStore();
+	const { token } = useAuthStore();
 	const handleEdit = (id: string) => {
 		history.push(`/products/${id}`);
 	};
 	const handleDelete = () => {
 		removeProduct(productId);
-		productsApi.deleteProduct(AUTH_TOKEN_FOR_DEVELOPMENT, productId);
+		productsApi.deleteProduct(token, productId);
 		handleCloseAlert();
 	};
 	const getCategoryName = (id: string): string => {
-		console.log('In table', categories);
 		const category = categories.find((cat) => cat._id === id);
 		return category!.name;
 	};

@@ -7,11 +7,11 @@ import ordersApi from '../../api/orders';
 import ErrorPage from '../../animations/components/ErrorPage';
 import AppLoader from '../../animations/components/AppLoader';
 import Centre from '../../components/utility/Centre';
-import { AUTH_TOKEN_FOR_DEVELOPMENT } from '../../constants';
 import LayoutWrapper from '../../components/layout/LayoutWrapper';
 import NoData from '../../animations/components/NoData';
 import { useOrderStore } from '../../store/orders';
 import OrderTable from '../../components/UI/OrderTable';
+import { useAuthStore } from '../../store/auth';
 
 const useStyles = makeStyles((props) => ({
 	title:
@@ -23,10 +23,11 @@ const useStyles = makeStyles((props) => ({
 
 const OrderHome: React.FC<RouteComponentProps> = ({ history }) => {
 	const { orders, setOrders } = useOrderStore();
+	const { token } = useAuthStore();
 	const { data, error, loading, request: getOrders } = useApi(ordersApi.getOrders);
 	const classes = useStyles();
 	useEffect(() => {
-		getOrders(AUTH_TOKEN_FOR_DEVELOPMENT);
+		getOrders(token);
 	}, []);
 	useEffect(
 		() => {

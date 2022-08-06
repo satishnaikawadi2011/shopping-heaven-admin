@@ -11,7 +11,7 @@ import categoriesApi from '../../api/categories';
 import ErrorPage from '../../animations/components/ErrorPage';
 import Centre from '../../components/utility/Centre';
 import AppLoader from '../../animations/components/AppLoader';
-import { AUTH_TOKEN_FOR_DEVELOPMENT, IMAGE_URL_PREFIX } from '../../constants';
+import {  IMAGE_URL_PREFIX } from '../../constants';
 import AppForm from '../../components/form/AppForm';
 import AppFormField from '../../components/form/AppFormField';
 import FormContainer from '../../components/form/FormContainer';
@@ -24,6 +24,7 @@ import LayoutWrapper from '../../components/layout/LayoutWrapper';
 import AppAlert from '../../components/UI/AppAlert';
 import AppSnackbar from '../../components/UI/AppSnackbar';
 import { FormikHelpers } from 'formik';
+import { useAuthStore } from '../../store/auth';
 
 
 
@@ -65,15 +66,16 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 		setProduct
 	] = useState<Product>();
 	const classes = useStyles();
+	const {token} = useAuthStore()
 	const { data, error, loading, request: getProduct } = useApi(productsApi.getProduct);
 	const { categories, setCategories } = useCategoryStore();
 	const { data: categoryData, loading: catLoading, error: catError, request: getCategories } = useApi(
 		categoriesApi.getCategories
 	);
-	const { error: uploadErr, image, request: uploadImage, uploading } = useFileUpload(AUTH_TOKEN_FOR_DEVELOPMENT)
+	const { error: uploadErr, image, request: uploadImage, uploading } = useFileUpload(token)
 	useEffect(() => {
-		getProduct(AUTH_TOKEN_FOR_DEVELOPMENT, productId);
-		getCategories(AUTH_TOKEN_FOR_DEVELOPMENT);
+		getProduct(token, productId);
+		getCategories(token);
 	}, []);
 	useEffect(
 		() => {
@@ -135,7 +137,7 @@ const EditProduct: React.FC<RouteComponentProps<{ id: string }>> = ({ match, his
 			title:values.title
 		}
 		setUpdateLoad(true);
-		const response = await productsApi.updateProduct(AUTH_TOKEN_FOR_DEVELOPMENT, productData)
+		const response = await productsApi.updateProduct(token, productData)
 		setUpdateLoad(false)
 
 		if (!response.ok) return setUpdateError(true);

@@ -12,10 +12,10 @@ import AppFormField from '../form/AppFormField';
 import SubmitButton from '../form/SubmitButton';
 import useApi from '../../hooks/useApi';
 import categoriesApi from '../../api/categories';
-import { AUTH_TOKEN_FOR_DEVELOPMENT } from '../../constants';
 import AppLoader from '../../animations/components/AppLoader';
 import { useCategoryStore } from '../../store/categories';
 import { FormHelperText } from '@material-ui/core';
+import { useAuthStore } from '../../store/auth';
 
 interface AddCatProps {
 	open: boolean;
@@ -32,8 +32,10 @@ const validationSchema = Yup.object({
 
 const AddCategoryDialog: React.FC<AddCatProps> = ({ handleClose, open }) => {
 	const { data, error, loading, request } = useApi(categoriesApi.createCategory);
+
+	const { token } = useAuthStore();
 	const submitHandler = (values: any) => {
-		request(AUTH_TOKEN_FOR_DEVELOPMENT, values.name);
+		request(token, values.name);
 	};
 	useEffect(
 		() => {

@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router';
 import useApi from '../../hooks/useApi';
 import { Order } from '../../models/Order';
 import ordersApi from '../../api/orders';
-import { AUTH_TOKEN_FOR_DEVELOPMENT, IMAGE_URL_PREFIX, INDIAN_RUPEE_SIGN } from '../../constants';
+import {IMAGE_URL_PREFIX, INDIAN_RUPEE_SIGN } from '../../constants';
 import LayoutWrapper from '../../components/layout/LayoutWrapper';
 import ErrorPage from '../../animations/components/ErrorPage';
 import Centre from '../../components/utility/Centre';
@@ -26,6 +26,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import EmailIcon from '@material-ui/icons/Email';
 import dayjs from 'dayjs';
 import CartAnimation from '../../animations/components/CartAnimation';
+import { useAuthStore } from '../../store/auth';
 
 const useStyles = makeStyles({
 	title:
@@ -52,9 +53,10 @@ const OrderDetails: React.FC<RouteComponentProps<{ id: string }>> = ({ match }) 
 		setOrder
 	] = useState<Order>();
 	const orderId = match.params.id;
+	const {token} = useAuthStore()
 	const { data, error, loading, request: getOrder } = useApi(ordersApi.getOrder);
 	useEffect(() => {
-		getOrder(AUTH_TOKEN_FOR_DEVELOPMENT, orderId);
+		getOrder(token, orderId);
 	}, []);
 	useEffect(
 		() => {

@@ -8,12 +8,12 @@ import categoriesApi from '../../api/categories';
 import ErrorPage from '../../animations/components/ErrorPage';
 import AppLoader from '../../animations/components/AppLoader';
 import Centre from '../../components/utility/Centre';
-import { AUTH_TOKEN_FOR_DEVELOPMENT } from '../../constants';
 import { useCategoryStore } from '../../store/categories';
 import LayoutWrapper from '../../components/layout/LayoutWrapper';
 import NoData from '../../animations/components/NoData';
 import CategoryTable from '../../components/UI/CategoryTable';
 import AddCategoryDialog from '../../components/UI/AddCategoryDialog';
+import { useAuthStore } from '../../store/auth';
 
 const useStyles = makeStyles((props) => ({
 	title:
@@ -33,6 +33,7 @@ const CategoryHome: React.FC<RouteComponentProps> = ({ history }) => {
 		addCategorySuccess,
 		setAddCategorySuccess
 	] = useState(false);
+	const { token } = useAuthStore();
 	const handleSnackbarClose = (event?: React.SyntheticEvent, reason?: string) => {
 		if (reason === 'clickaway') {
 			return;
@@ -47,7 +48,7 @@ const CategoryHome: React.FC<RouteComponentProps> = ({ history }) => {
 	const classes = useStyles();
 	useEffect(
 		() => {
-			getCategories(AUTH_TOKEN_FOR_DEVELOPMENT);
+			getCategories(token);
 		},
 		[
 			open

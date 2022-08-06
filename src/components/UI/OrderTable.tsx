@@ -15,12 +15,13 @@ import { Chip, IconButton } from '@material-ui/core';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
-import { AUTH_TOKEN_FOR_DEVELOPMENT, INDIAN_RUPEE_SIGN } from '../../constants';
+import {  INDIAN_RUPEE_SIGN } from '../../constants';
 import { Order } from '../../models/Order';
 import { useHistory } from 'react-router';
 import AppAlertDialog from '../AppAlertDialog';
 import { useOrderStore } from '../../store/orders';
 import ordersApi from '../../api/orders';
+import { useAuthStore } from '../../store/auth';
 
 dayjs.extend(relativeTime);
 
@@ -66,6 +67,7 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders }) => {
 	const classes = useStyles();
 	const history = useHistory();
 	const [isPaying, setIsPaying] = useState(false);
+	const {token} = useAuthStore()
 	const [
 		order,
 		setOrder
@@ -79,12 +81,12 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders }) => {
 	};
 	const handleDelivered = () => {
 		markOrderAsDelivered(order?._id as any);
-		ordersApi.markAsDelivered(AUTH_TOKEN_FOR_DEVELOPMENT, order?._id as any);
+		ordersApi.markAsDelivered(token, order?._id as any);
 		handleCloseAlert();
 	};
 		const handlePaid = () => {
 		markOrderAsPaid(order?._id as any);
-		ordersApi.markOrderAsPaid(AUTH_TOKEN_FOR_DEVELOPMENT, order?._id as any,'inr',order!.totalPrice);
+		ordersApi.markOrderAsPaid(token, order?._id as any,'inr',order!.totalPrice);
 		handleCloseAlert();
 	};
 	return (

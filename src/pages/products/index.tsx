@@ -11,10 +11,10 @@ import AppLoader from '../../animations/components/AppLoader';
 import { useProductStore } from '../../store/products';
 import ProductTable from '../../components/UI/ProductTable';
 import Centre from '../../components/utility/Centre';
-import { AUTH_TOKEN_FOR_DEVELOPMENT } from '../../constants';
 import NoProductsFound from '../../animations/components/NoProductsFound';
 import { useCategoryStore } from '../../store/categories';
 import LayoutWrapper from '../../components/layout/LayoutWrapper';
+import { useAuthStore } from '../../store/auth';
 
 const useStyles = makeStyles((props) => ({
 	title:
@@ -26,6 +26,7 @@ const useStyles = makeStyles((props) => ({
 }));
 
 const Index: React.FC<RouteComponentProps> = ({ history }) => {
+	const { token } = useAuthStore();
 	const { products, setProducts } = useProductStore();
 	const { categories, setCategories } = useCategoryStore();
 	const { data, error, loading, request: getProducts } = useApi(productsApi.getProducts);
@@ -48,11 +49,11 @@ const Index: React.FC<RouteComponentProps> = ({ history }) => {
 		]
 	);
 	const handleAddProduct = async () => {
-		await createProduct(AUTH_TOKEN_FOR_DEVELOPMENT);
+		await createProduct(token);
 	};
 	useEffect(() => {
-		getProducts(AUTH_TOKEN_FOR_DEVELOPMENT);
-		getCategories(AUTH_TOKEN_FOR_DEVELOPMENT);
+		getProducts(token);
+		getCategories(token);
 	}, []);
 	useEffect(
 		() => {

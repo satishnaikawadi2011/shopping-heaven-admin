@@ -17,8 +17,8 @@ import { IconButton } from '@material-ui/core';
 import { User } from '../../models/User';
 import { useUserStore } from '../../store/users';
 import usersApi from '../../api/users'
-import { AUTH_TOKEN_FOR_DEVELOPMENT } from '../../constants';
 import AppAlertDialog from '../AppAlertDialog';
+import { useAuthStore } from '../../store/auth';
 
 const StyledTableCell = withStyles((theme: Theme) =>
 	createStyles({
@@ -61,6 +61,7 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers }) => {
 	const classes = useStyles();
 	const { removeUser, toggleAsAdmin } = useUserStore();
 	const [isDeleting, setIsDeleting] = useState(false);
+	const {token} = useAuthStore()
 	const [
 		user,
 		setUser
@@ -74,12 +75,12 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers }) => {
 	};
 	const handleDelete = () => {
 		removeUser(user!._id)
-		usersApi.deleteUser(AUTH_TOKEN_FOR_DEVELOPMENT, user!._id);
+		usersApi.deleteUser(token, user!._id);
 		handleCloseAlert();
 	};
 	const handleToggleIsAdmin = () => {
 			toggleAsAdmin(user!._id ,!user?.isAdmin)
-		usersApi.toggleAdminPrevillages(AUTH_TOKEN_FOR_DEVELOPMENT,user!.username,!user!.isAdmin );
+		usersApi.toggleAdminPrevillages(token,user!.username,!user!.isAdmin);
 		handleCloseAlert();
 	};
 	const getTitleAndDescOfAlert = () => {

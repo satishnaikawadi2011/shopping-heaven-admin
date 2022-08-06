@@ -13,8 +13,8 @@ import { IconButton } from '@material-ui/core';
 import { Category } from '../../models/Category';
 import AppAlertDialog from '../AppAlertDialog';
 import { useCategoryStore } from '../../store/categories';
-import { AUTH_TOKEN_FOR_DEVELOPMENT } from '../../constants';
 import categoriesApi from '../../api/categories';
+import { useAuthStore } from '../../store/auth';
 
 const StyledTableCell = withStyles((theme: Theme) =>
 	createStyles({
@@ -55,6 +55,7 @@ interface CategoryTableProps {
 
 const CategoryTable: React.FC<CategoryTableProps> = ({ categories }) => {
 	const { removeCategory } = useCategoryStore();
+	const { token } = useAuthStore();
 	const [
 		categoryId,
 		setCategoryId
@@ -68,7 +69,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories }) => {
 	};
 	const handleDelete = () => {
 		removeCategory(categoryId);
-		categoriesApi.deleteCategory(AUTH_TOKEN_FOR_DEVELOPMENT, categoryId);
+		categoriesApi.deleteCategory(token, categoryId);
 		handleCloseAlert();
 	};
 	const classes = useStyles();

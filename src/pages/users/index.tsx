@@ -7,11 +7,11 @@ import usersApi from '../../api/users';
 import ErrorPage from '../../animations/components/ErrorPage';
 import AppLoader from '../../animations/components/AppLoader';
 import Centre from '../../components/utility/Centre';
-import { AUTH_TOKEN_FOR_DEVELOPMENT } from '../../constants';
 import LayoutWrapper from '../../components/layout/LayoutWrapper';
 import NoData from '../../animations/components/NoData';
 import { useUserStore } from '../../store/users';
 import CustomerTable from '../../components/UI/CustomerTable';
+import { useAuthStore } from '../../store/auth';
 
 const useStyles = makeStyles((props) => ({
 	title:
@@ -23,10 +23,11 @@ const useStyles = makeStyles((props) => ({
 
 const UserHome: React.FC<RouteComponentProps> = ({ history }) => {
 	const { setUsers, users } = useUserStore();
+	const { token } = useAuthStore();
 	const { data, error, loading, request: getUsers } = useApi(usersApi.getUsers);
 	const classes = useStyles();
 	useEffect(() => {
-		getUsers(AUTH_TOKEN_FOR_DEVELOPMENT);
+		getUsers(token);
 	}, []);
 	useEffect(
 		() => {
